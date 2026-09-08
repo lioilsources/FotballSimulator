@@ -12,16 +12,21 @@ enum Rating { PERFECT, GOOD, EARLY, LATE, MISS }
 ## contact_offset: kde na míči (-1..1 od středu, +x vpravo, +y nahoře);
 ## swing_curve: zakřivení swipu -1..1 (+ = oblouk doprava);
 ## power: 0..1 z rychlosti swipu;
-## timing_error: sekundy od ideálního okamžiku, kladné = pozdě.
+## timing_error: sekundy od ideálního okamžiku, kladné = pozdě;
+## ball_vel: rychlost míče před kontaktem v lokálním rámci (serve míč
+## přilétá +z, tj. proti směru kopu). Impuls vychází z relativní rychlosti
+## nárt−míč, takže slabý/pozdní kontakt míč jen tečuje a ten letí dál,
+## místo aby se „přilepil“ a spadl.
 ##
 ## Vrací {hit, rating, vel, omega, timing_quality, v_foot, contact_dir}.
 static func compute_kick(contact_offset: Vector2, swing_curve: float,
-		power: float, timing_error: float) -> Dictionary:
+		power: float, timing_error: float,
+		ball_vel: Vector3 = Vector3.ZERO) -> Dictionary:
 	var rating := rate_timing(timing_error)
 	if rating == Rating.MISS:
-		# nárt mine — míč letí dál, žádný impuls
+		# nárt mine — míč letí dál beze změny
 		return {
-			"hit": false, "rating": rating, "vel": Vector3.ZERO,
+			"hit": false, "rating": rating, "vel": ball_vel,
 			"omega": Vector3.ZERO, "timing_quality": 0.0, "v_foot": 0.0,
 			"contact_dir": Vector3.ZERO,
 		}
@@ -46,10 +51,14 @@ static func compute_kick(contact_offset: Vector2, swing_curve: float,
 	# dráha nártu: dopředu s mírným zdvihem; energii předává jen složka
 	# podél normály — extrémní offsety = slabší, ale točivější zásah
 	var swing_dir := Vector3(0, T.SWING_LIFT, -1).normalized()
-	var normal_speed := v_foot * maxf(0.0, swing_dir.dot(n))
+	var foot_normal_speed := v_foot * maxf(0.0, swing_dir.dot(n))
 
-	# 4: impuls → rychlost míče (§3.4/4)
-	var vel := n * (normal_speed * T.COR_KICK * T.FOOT_MASS_EFF / T.BALL_MASS)
+	# 4: impuls → rychlost míče (§3.4/4). Rozhoduje rychlost, kterou se
+	# nárt a míč k sobě podél normály blíží; míč letící proti nártu dostane
+	# o to víc, míč prchající před nártem (pomalý švih) skoro nic.
+	var closing_speed := maxf(0.0, foot_normal_speed - ball_vel.dot(n))
+	var vel := ball_vel \
+			+ n * (closing_speed * T.COR_KICK * T.FOOT_MASS_EFF / T.BALL_MASS)
 
 	# 5: faleš — tření táhne plášť po tangenciální složce švihu; osa spinu
 	# je u × t (odvozeno z τ = r×F; plánův tvar swing×d má pro tuhle

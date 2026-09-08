@@ -49,6 +49,9 @@ const IDEAL_KICK_HEIGHT := 0.55      # m; ideál = míč klesá skrz tuhle výš
 # ── Swipe input (§4) ──────────────────────────────────────────
 const SWIPE_DEADZONE_PX := 8.0       # mikrotřes se nepočítá jako swipe
 const SWIPE_MIN_LENGTH_PX := 40.0    # kratší tah = zrušené gesto
+const SWIPE_MIN_DURATION := 0.02     # s; kratší = šum, ne gesto
+const SWIPE_SAMPLE_MIN_PX := 2.0     # posun prstu menší než tohle se nevzorkuje
+const SWIPE_MAX_POINTS := 256        # strop vzorků dráhy (dlouhý drag v slow-mo)
 const SWIPE_POWER_FULL_INS := 12.0   # rychlost prstu v palcích/s = plná síla (DPI normalizace)
 const OVERLAY_BALL_SCREEN_FRAC := 0.35  # průměr overlay míče vůči šířce obrazovky
 const ASSIST_DEFAULT := true         # slow-mo od touch-down (klávesa A přepíná)
@@ -59,11 +62,12 @@ const FREEZE_TIME := 0.15            # s reálného času; freeze-frame kontaktu
 const HUD_FADE_DELAY := 2.5          # s; jak dlouho drží kick overlay
 
 # ── Hřiště / brána ────────────────────────────────────────────
-# Scéna pitch.tscn má bránu na origin — game_state ji při startu posune
-# na -GOAL_DISTANCE, aby zdroj pravdy zůstal tady.
+# Bránu staví goal.gd z těchhle hodnot (tyče, břevno, umístění) — scéna
+# pitch.tscn nemá žádné rozměry natvrdo.
 const GOAL_DISTANCE := 18.0          # m od hráče (origin)
 const GOAL_HALF_WIDTH := 3.66        # vnitřní polovina šířky brány
-const GOAL_HEIGHT := 2.44
+const GOAL_HEIGHT := 2.44            # spodní hrana břevna
+const POST_RADIUS := 0.06            # tyče i břevno
 
 # ── Serve / debug (Fáze 0) ────────────────────────────────────
 const SERVE_SEED := 12345            # -1 = náhodný seed (hra); pevný = replaye

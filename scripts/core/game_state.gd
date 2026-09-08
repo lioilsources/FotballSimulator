@@ -8,7 +8,6 @@ enum State { SERVE, KICK_WINDOW, FLIGHT, RESULT }
 
 @onready var ball: BallPhysics = $Ball
 @onready var trail: Node = $Ball/Trail
-@onready var goal: Node3D = $Pitch/Goal
 @onready var hud: CanvasLayer = $HUD
 @onready var freeze: Control = $HUD/FreezeFrame
 @onready var swipe: Control = $SwipeOverlay
@@ -23,8 +22,6 @@ var _swung := false        # jeden švih na serve
 var _assist := true
 
 func _ready() -> void:
-	# zdroj pravdy pro geometrii je tuning.gd — scéna má bránu na origin
-	goal.position.z = -Tuning.GOAL_DISTANCE
 	_serve_gen = ServeGenerator.new(Tuning.SERVE_SEED)
 	_assist = Tuning.ASSIST_DEFAULT
 	ball.ball_stopped.connect(_on_ball_stopped)
@@ -119,7 +116,16 @@ func _on_kick_released(offset: Vector2, curve: float, power: float) -> void:
 	swipe.enabled = false
 
 	var err := _serve_time - _t_ideal
-	var res: Dictionary = ContactModel.compute_kick(offset, curve, power, err)
+
+	# lokální rámec kopu (-z na bránu) ⇄ svět
+	var fwd := Vector3(0, 0, -Tuning.GOAL_DISTANCE) - ball.position
+	fwd.y = 0.0
+	fwd = fwd.normalized()
+	var right := fwd.cross(Vector3.UP)
+	var ball_vel_local := Vector3(ball.vel.dot(right), ball.vel.y, -ball.vel.dot(fwd))
+
+	var res: Dictionary = ContactModel.compute_kick(offset, curve, power, err,
+			ball_vel_local)
 	var err_ms := roundi(err * 1000.0)
 
 	if not res.hit:
@@ -127,11 +133,6 @@ func _on_kick_released(offset: Vector2, curve: float, power: float) -> void:
 		hud.show_miss(err_ms)
 		return
 
-	# lokální rámec kopu (-z na bránu) → svět
-	var fwd := Vector3(0, 0, -Tuning.GOAL_DISTANCE) - ball.position
-	fwd.y = 0.0
-	fwd = fwd.normalized()
-	var right := fwd.cross(Vector3.UP)
 	var vel: Vector3 = right * res.vel.x + Vector3.UP * res.vel.y - fwd * res.vel.z
 	var omega: Vector3 = right * res.omega.x + Vector3.UP * res.omega.y - fwd * res.omega.z
 	var contact_world: Vector3 = ball.position + Tuning.BALL_RADIUS \
@@ -207,6 +208,9 @@ func _finish_serve(msg: String, color: Color) -> void:
 	if state == State.RESULT:
 		return
 	state = State.RESULT
+	# hráč mohl držet prst (assist slow-mo) — bez release by time_scale
+	# zůstal 0.6 přes pauzu i další serve
+	Engine.time_scale = 1.0
 	swipe.enabled = false
 	if msg != "":
 		hud.show_result(msg, color)

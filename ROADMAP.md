@@ -21,7 +21,7 @@
   další míč. Debug kopy 1/2/3, assist slow-mo (A).
 - Export presety pro Android (APK) a iOS (Xcode projekt) jsou připravené.
 
-### Nalezené chyby (opravit hned, nezávisle na fázích)
+### Nalezené chyby — **opraveno** (commit „Fix B1–B4“, regrese v testech)
 
 | # | Kde | Problém | Ověření |
 |---|-----|---------|---------|
@@ -43,8 +43,7 @@
 
 ### Mezery v testech
 
-- `swipe_input.gd` nemá žádný test (znaménko křivky, DPI normalizace síly,
-  podmínky zrušení). Logika `_finish` je smíchaná s Control uzlem.
+- ~~`swipe_input.gd` nemá žádný test~~ — vyřešeno (`swipe_test.gd`).
 - `game_state.gd`: netestováno MIMO, NEDOLETĚL, POZDĚ (bez švihu), VZDUCH
   (MISS → druhý dopad), interpolace `_check_goal_crossing` na hraně tyče,
   fallback `_presim_ideal_time` (apex < `IDEAL_KICK_HEIGHT`).
@@ -55,7 +54,7 @@
   není to test, je to náhoda konstant).
 - Žádné property testy (zrcadlová symetrie pro náhodné vstupy, horní mez
   rychlosti, determinismus contact modelu).
-- Žádný jednotný runner, žádné CI. Testy se spouští ručně třemi příkazy.
+- ~~Žádný jednotný runner~~ (`tests/run_all.sh`), CI stále chybí.
 - Lint: `gdlint` hlásí jen `class-definitions-order` (15×, stylové),
   `gdformat --check` by přeformátoval všech 12 souborů. Buď přijmout
   formátovač, nebo lint vypnout konfigurací — ne nechat šedou zónu.
@@ -66,7 +65,7 @@
 
 ### T0 — Infrastruktura (½ sezení) — **první krok**
 
-- [ ] `tests/run_all.sh`: spustí import + všechny `tests/*_test.gd`, agreguje
+- [x] `tests/run_all.sh`: spustí import + všechny `tests/*_test.gd`, agreguje
       exit code, cesta k Godotu z `$GODOT` env (macOS default z CLAUDE.md).
 - [ ] GitHub Actions: `godotengine/godot` 4.7.1 **standard** Linux build
       (GDScript nepotřebuje mono), cache `.godot/`, krok `--import`, pak
@@ -80,21 +79,20 @@
 
 ### T1 — Regrese pro nalezené chyby (s opravami B1–B4)
 
-- [ ] `gameplay_test`: scénář „touch-down v okně, serve vyprší bez release“
+- [x] `gameplay_test`: scénář „touch-down v okně, serve vyprší bez release“
       → `Engine.time_scale == 1.0` v RESULT a v dalším SERVE (B1).
-- [ ] `contact_test`: kontakt s `ball_vel_in` — pozdní slabý kontakt zachová
+- [x] `contact_test`: kontakt s `ball_vel` — pozdní slabý kontakt zachová
       složku příchozí rychlosti; silný kop ji přebije (B2).
-- [ ] `physics_test` nebo nový `scene_test`: rozměry brány ve scéně odpovídají
-      tuningu (B3) — nebo brána generovaná ze skriptu.
+- [x] `gameplay_test`: rozměry brány odpovídají tuningu (B3, brána
+      generovaná z `goal.gd`).
 - [ ] Pinned výstupy contact modelu pro 5–6 kanonických kopů (golden
       hodnoty jako u physics_test) — chytí nechtěné změny při tuningu D1/D2.
 
 ### T2 — Pokrytí mezer
 
-- [ ] `swipe_input`: vytáhnout výpočet `(pts, duration, dpi) → {power, curve}`
-      do statické funkce (`SwipeMath.analyze`) a testovat tabulkově: oblouk
-      doprava/doleva, rovný tah, zrušení (krátký, deadzone, < 20 ms), DPI 160
-      vs 480 stejná síla.
+- [x] `swipe_input`: výpočet `(pts, duration, dpi) → {power, curve}` jako
+      statická `analyze()`, tabulkové testy v `swipe_test.gd` (oblouk
+      doprava/doleva, rovný tah, zrušení, DPI 160 vs 480).
 - [ ] `ball_physics`: topspin při odskoku zrychlí dopředu / backspin zbrzdí;
       po slabém odskoku kutálení a `ball_stopped`; spin klesá s `SPIN_DECAY`.
 - [ ] `serve_generator`: pro N=500 seedů ověřit, že apex po 1. odskoku ≥
@@ -126,20 +124,25 @@
 
 ## 2. Roadmapa vylepšení
 
-### V0 — Opravy (před čímkoliv dalším)
+### V0 — Opravy — **hotovo**
 
-1. **B1** `_finish_serve` a `_serve` resetují `Engine.time_scale = 1.0`;
-   `swipe_input` při `enabled = false` během trackingu emituje
-   `swipe_canceled`.
-2. **B2** `ContactModel.compute_kick(..., ball_vel_local: Vector3)`:
-   výstupní rychlost = příchozí + impuls ve směru normály (relativní
-   rychlost nárt−míč, ne absolutní). `game_state` převede `ball.vel` do
-   lokálního rámce. Zachovat golden hodnoty pro `ball_vel = 0`.
-3. **B3** Bránu stavět ze skriptu podle tuningu (`goal.gd` postaví
-   3 válce z `GOAL_HALF_WIDTH`, `GOAL_HEIGHT`, `POST_RADIUS`) — zároveň
-   základ pro kolize tyčí ve Fázi 2.
-4. **B4** Limit bodů swipu (např. 256, decimace) nebo vzorkovat jen
-   při posunu > 2 px.
+1. ~~**B1**~~ `_finish_serve` resetuje `Engine.time_scale`; `swipe_input`
+   při `enabled = false` během trackingu emituje `swipe_canceled`.
+   Regrese: `gameplay_test` (druhá rozehrávka).
+2. ~~**B2**~~ `ContactModel.compute_kick(..., ball_vel)`: impuls z relativní
+   normálové rychlosti nárt−míč, výstup = příchozí + impuls. Golden hodnoty
+   pro `ball_vel = 0` beze změny. Pozn.: pozdní kontakt teď míč **odrazí
+   dolů** (nárt má hmotnost, kontakt je vysoko na plášti) — to je
+   mechanika „pozdě = do země“, ne průlet. Regrese: `contact_test`.
+3. ~~**B3**~~ `goal.gd` staví bránu z tuningu, `pitch.tscn` bez rozměrů.
+   Regrese: `gameplay_test` (geometrie).
+4. ~~**B4**~~ `SwipeInput.add_point` (min. posun 2 px, strop 256 vzorků
+   s decimací) + čistá `analyze()`. Regrese: nový `swipe_test`.
+
+Vedlejší efekt B2 pro tuning pass: příchozí boční rychlost serve míče se
+teď propíše do kopu (gól v gameplay_testu se posunul z x=0.00 na 0.32 m).
+Hráč tím dostává reálnou zpětnou vazbu „míč přilétal zboku“, ale je to
+další proměnná, kterou D1/D2 tuning musí vzít v úvahu.
 
 ### V1 — Tuning pass jádra (D1–D2, ½ dne hraní + čísla)
 

@@ -24,10 +24,14 @@ GODOT="/Volumes/YOTTA/Applications/Godot_mono.app/Contents/MacOS/Godot"
 # spustit hru
 "$GODOT" --path .
 
-# headless testy (exit code 0/1)
+# všechny headless testy jedním příkazem (import + tests/*_test.gd, exit 0/1)
+GODOT="$GODOT" tests/run_all.sh
+
+# jednotlivě
 "$GODOT" --headless --path . --script res://tests/physics_test.gd   # let, odskok, determinismus
 "$GODOT" --headless --path . --script res://tests/contact_test.gd   # tabulkové případy kontaktu
-"$GODOT" --headless --path . --script res://tests/gameplay_test.gd  # end-to-end serve→kop→gól
+"$GODOT" --headless --path . --script res://tests/swipe_test.gd     # geometrie gesta (síla, křivka, strop vzorků)
+"$GODOT" --headless --path . --script res://tests/gameplay_test.gd  # end-to-end serve→kop→gól, slow-mo reset, brána
 
 # po přidání nového class_name souboru před headless během přegenerovat cache:
 "$GODOT" --headless --path . --import
@@ -80,8 +84,14 @@ slow-mo. Debug kopy: `1` přímý, `2` faleš (sidespin), `3` topspin.
   `const T`**, aby fungovaly headless bez autoloadů a bez závislostí na scéně.
 - Fyzika letu je vlastní integrace (semi-implicit Euler, 120 Hz physics tick
   v project.godot) — Godot RigidBody3D nemá Magnus, nepoužívat.
-- Geometrie brány: scéna `pitch.tscn` má bránu na origin, `game_state.gd` ji
-  při startu posouvá na `-Tuning.GOAL_DISTANCE` — zdroj pravdy je tuning.
+- Geometrie brány: `scripts/core/goal.gd` staví tyče a břevno v `_ready()`
+  z `GOAL_HALF_WIDTH`/`GOAL_HEIGHT`/`POST_RADIUS` a umístí bránu na
+  `-GOAL_DISTANCE`; `pitch.tscn` nemá žádné rozměry natvrdo.
+- Contact model dostává i příchozí rychlost míče (lokální rámec); impuls
+  vychází z relativní normálové rychlosti nárt−míč, takže slabý kontakt míč
+  jen odrazí místo aby ho zastavil ve vzduchu.
+- Swipe: geometrie gesta je ve statických `SwipeInput.add_point` /
+  `analyze` (čisté, testované); Control uzel jen sbírá události a kreslí.
 - Souřadnice: hráč na origin, kope směrem **-z**; topspin pro let -z = spin
   kolem **-x**, sidespin kolem **y**.
 - Contact model (`contact_model.gd`): čistá statická funkce v lokálním rámci

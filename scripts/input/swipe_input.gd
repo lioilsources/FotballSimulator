@@ -14,8 +14,11 @@ var ball: Node3D = null        # nastavuje game_state (kvůli zrcadlení rotace)
 var enabled := true:
 	set(v):
 		enabled = v
-		if not v:
+		if not v and _tracking:
+			# vypnutí uprostřed gesta = zrušené gesto; game_state na to
+			# musí zareagovat (zrušit assist slow-mo), release už nepřijde
 			_tracking = false
+			swipe_canceled.emit()
 
 var _tracking := false
 var _pts := PackedVector2Array()
@@ -40,7 +43,7 @@ func _input(event: InputEvent) -> void:
 		elif _tracking:
 			_finish(event.position)
 	elif event is InputEventScreenDrag and _tracking:
-		_pts.append(event.position)
+		_pts = add_point(_pts, event.position)
 
 func _try_start(pos: Vector2) -> void:
 	var center := _overlay_center()
@@ -59,33 +62,63 @@ func _finish(pos: Vector2) -> void:
 	_tracking = false
 	_pts.append(pos)
 	var duration := Time.get_ticks_msec() / 1000.0 - _t_start
-
-	var path_len := 0.0
-	for i in range(1, _pts.size()):
-		path_len += _pts[i].distance_to(_pts[i - 1])
-	var chord := _pts[_pts.size() - 1] - _pts[0]
-
-	if path_len < T.SWIPE_MIN_LENGTH_PX or chord.length() < T.SWIPE_DEADZONE_PX \
-			or duration < 0.02:
+	var g := analyze(_pts, duration, _dpi)
+	if not g.ok:
 		swipe_canceled.emit()
 		return
+	kick_released.emit(_contact_offset, g.curve, g.power)
+
+# ── čistá geometrie gesta (statické, headless testovatelné) ───
+
+## Přidá vzorek dráhy prstu. Mikro-posuny pod SWIPE_SAMPLE_MIN_PX se
+## zahazují; při přetečení SWIPE_MAX_POINTS se dráha zředí na polovinu
+## (první a poslední bod zůstávají), takže paměť ani _draw nerostou
+## s délkou držení prstu.
+static func add_point(pts: PackedVector2Array, pos: Vector2) -> PackedVector2Array:
+	if pts.size() > 0 \
+			and pts[pts.size() - 1].distance_to(pos) < T.SWIPE_SAMPLE_MIN_PX:
+		return pts
+	pts.append(pos)
+	if pts.size() <= T.SWIPE_MAX_POINTS:
+		return pts
+	var thinned := PackedVector2Array()
+	for i in range(0, pts.size(), 2):
+		thinned.append(pts[i])
+	if thinned[thinned.size() - 1] != pts[pts.size() - 1]:
+		thinned.append(pts[pts.size() - 1])
+	return thinned
+
+## Vyhodnotí dokončené gesto → {ok, power, curve}. ok = false pro tah
+## kratší než SWIPE_MIN_LENGTH_PX, tětivu v dead-zone nebo tah kratší než
+## SWIPE_MIN_DURATION. Souřadnice jsou obrazovkové (y dolů).
+static func analyze(pts: PackedVector2Array, duration: float, dpi: float) -> Dictionary:
+	if pts.size() < 2:
+		return {"ok": false, "power": 0.0, "curve": 0.0}
+	var path_len := 0.0
+	for i in range(1, pts.size()):
+		path_len += pts[i].distance_to(pts[i - 1])
+	var chord := pts[pts.size() - 1] - pts[0]
+
+	if path_len < T.SWIPE_MIN_LENGTH_PX or chord.length() < T.SWIPE_DEADZONE_PX \
+			or duration < T.SWIPE_MIN_DURATION:
+		return {"ok": false, "power": 0.0, "curve": 0.0}
 
 	# síla: rychlost prstu normalizovaná na DPI (px/s → in/s)
 	var power := clampf(
-			(path_len / duration) / _dpi / T.SWIPE_POWER_FULL_INS, 0.0, 1.0)
+			(path_len / duration) / dpi / T.SWIPE_POWER_FULL_INS, 0.0, 1.0)
 
 	# zakřivení: max podepsaná kolmá odchylka od tětivy / půlka tětivy;
 	# kladné = oblouk doprava vůči směru tahu
 	var dir := chord.normalized()
 	var max_dev := 0.0
-	for p in _pts:
-		var rel := p - _pts[0]
+	for p in pts:
+		var rel := p - pts[0]
 		var dev := dir.x * rel.y - dir.y * rel.x
 		if absf(dev) > absf(max_dev):
 			max_dev = dev
 	var curve := clampf(max_dev / (chord.length() * 0.5), -1.0, 1.0)
 
-	kick_released.emit(_contact_offset, curve, power)
+	return {"ok": true, "power": power, "curve": curve}
 
 # ── kreslení overlay ──────────────────────────────────────────
 
