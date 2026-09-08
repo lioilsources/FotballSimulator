@@ -1,0 +1,39 @@
+[gd_scene load_steps=7 format=3]
+
+[ext_resource type="Script" path="res://scripts/core/ball_physics.gd" id="1"]
+[ext_resource type="Script" path="res://scripts/util/debug_trail.gd" id="2"]
+
+[sub_resource type="SphereMesh" id="mesh_ball"]
+radius = 0.11
+height = 0.22
+
+[sub_resource type="StandardMaterial3D" id="mat_ball"]
+albedo_color = Color(0.93, 0.93, 0.93, 1)
+roughness = 0.6
+
+[sub_resource type="SphereMesh" id="mesh_dot"]
+radius = 0.028
+height = 0.056
+
+[sub_resource type="StandardMaterial3D" id="mat_dot"]
+albedo_color = Color(0.1, 0.1, 0.12, 1)
+
+[node name="Ball" type="Node3D"]
+script = ExtResource("1")
+
+[node name="Mesh" type="MeshInstance3D" parent="."]
+mesh = SubResource("mesh_ball")
+surface_material_override/0 = SubResource("mat_ball")
+
+[node name="SpinDot" type="MeshInstance3D" parent="Mesh"]
+position = Vector3(0, 0, 0.095)
+mesh = SubResource("mesh_dot")
+surface_material_override/0 = SubResource("mat_dot")
+
+[node name="SpinDot2" type="MeshInstance3D" parent="Mesh"]
+position = Vector3(0.095, 0, 0)
+mesh = SubResource("mesh_dot")
+surface_material_override/0 = SubResource("mat_dot")
+
+[node name="Trail" type="MeshInstance3D" parent="."]
+script = ExtResource("2")

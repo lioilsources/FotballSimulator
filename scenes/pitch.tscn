@@ -1,0 +1,37 @@
+[gd_scene load_steps=3 format=3]
+
+[sub_resource type="StandardMaterial3D" id="mat_grass"]
+albedo_color = Color(0.16, 0.45, 0.18, 1)
+roughness = 1.0
+
+[sub_resource type="StandardMaterial3D" id="mat_goal"]
+albedo_color = Color(0.95, 0.95, 0.95, 1)
+roughness = 0.3
+
+[node name="Pitch" type="Node3D"]
+
+[node name="Ground" type="CSGBox3D" parent="."]
+position = Vector3(0, -0.05, -10)
+size = Vector3(45, 0.1, 60)
+material = SubResource("mat_grass")
+
+[node name="Goal" type="Node3D" parent="."]
+
+[node name="PostLeft" type="CSGCylinder3D" parent="Goal"]
+position = Vector3(-3.72, 1.22, 0)
+radius = 0.06
+height = 2.44
+material = SubResource("mat_goal")
+
+[node name="PostRight" type="CSGCylinder3D" parent="Goal"]
+position = Vector3(3.72, 1.22, 0)
+radius = 0.06
+height = 2.44
+material = SubResource("mat_goal")
+
+[node name="Crossbar" type="CSGCylinder3D" parent="Goal"]
+position = Vector3(0, 2.5, 0)
+rotation = Vector3(0, 0, 1.5708)
+radius = 0.06
+height = 7.56
+material = SubResource("mat_goal")
