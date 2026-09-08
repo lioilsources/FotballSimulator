@@ -10,7 +10,8 @@ model — kde a kdy nárt potká míč; vše ostatní z toho plyne deterministic
 **Stav: Fáze 1 hotová** (contact model, swipe input, timing okno s
 pre-simulací ideálu, freeze-frame, HUD; hratelná smyčka serve→kick→result).
 Další krok: Fáze 2 — verlet síť, flight kamera, heatmapa, tuning pass
-(viz VOLLEY_PLAN.md §7).
+(viz VOLLEY_PLAN.md §7). Audit stavu, známé chyby a plán testování +
+vylepšení: **ROADMAP.md** (začít sekcí V0/T0).
 
 ## Commands
 
