@@ -22,6 +22,7 @@ func _initialize() -> void:
 	_test_timing_ratings()
 	_test_late_shift_mechanics()
 	_test_power_scaling()
+	_test_incoming_ball_velocity()
 	_test_perfect_volley_scores()
 
 	if _failures == 0:
@@ -108,6 +109,41 @@ func _test_power_scaling() -> void:
 	_expect("síla škáluje rychlost (%.1f < %.1f)"
 			% [half.vel.length(), full.vel.length()],
 			half.vel.length() < full.vel.length() * 0.6)
+
+## B2 (ROADMAP): contact model nesmí zahodit příchozí rychlost míče.
+## Serve míč přilétá proti hráči (+z lokálně) a klesá.
+func _test_incoming_ball_velocity() -> void:
+	var incoming := Vector3(0.0, -2.0, 4.0)
+	var aim := Vector2(0, -0.12)
+
+	# silný kop: příchozí rychlost jen přidá na razanci, směr drží
+	var still: Dictionary = CM.compute_kick(aim, 0.0, 1.0, 0.0)
+	var strong: Dictionary = CM.compute_kick(aim, 0.0, 1.0, 0.0, incoming)
+	_expect("příchozí míč: silný kop letí na bránu (vz=%.1f)" % strong.vel.z,
+			strong.vel.z < -25.0)
+	_expect("příchozí míč: proti nártu = razantnější (%.1f > %.1f)"
+			% [strong.vel.length(), still.vel.length()],
+			strong.vel.length() > still.vel.length() + 0.5)
+	_expect("ball_vel = 0 ⇒ stejný výsledek jako dřív",
+			CM.compute_kick(aim, 0.0, 1.0, 0.0, Vector3.ZERO).vel == still.vel)
+
+	# pozdní tečování: nárt skoro stojí, míč se od něj odrazí (nárt má
+	# hmotnost) — vysoko na plášti, takže dolů do země; dřív vel ≈ 0 a míč
+	# zůstal viset ve vzduchu
+	var late: Dictionary = CM.compute_kick(aim, 0.0, 1.0, 0.09, incoming)
+	_expect("pozdní tečování: míč nezůstane viset (|vel|=%.1f)" % late.vel.length(),
+			late.vel.length() > 2.0)
+	_expect("pozdní tečování: jde do země (vy=%.1f)" % late.vel.y, late.vel.y < -1.5)
+	_expect("pozdní tečování: neletí na bránu (vz=%.1f)" % late.vel.z, late.vel.z > -5.0)
+
+	# nárt pomalejší než míč prchající před ním: žádný impuls, jen průlet
+	var fleeing := Vector3(0, 0, -10.0)
+	var weak: Dictionary = CM.compute_kick(Vector2.ZERO, 0.0, 0.1, 0.0, fleeing)
+	_expect("míč utíká rychleji než nárt ⇒ beze změny", weak.vel == fleeing)
+
+	# MISS vrací příchozí rychlost beze změny
+	var miss: Dictionary = CM.compute_kick(aim, 0.0, 1.0, 0.2, incoming)
+	_expect("MISS ⇒ vel = příchozí", not miss.hit and miss.vel == incoming)
 
 ## Integrace: perfektní nízký volej z kop-zóny musí projít bránou.
 func _test_perfect_volley_scores() -> void:

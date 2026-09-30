@@ -1,4 +1,6 @@
-[gd_scene load_steps=3 format=3]
+[gd_scene load_steps=4 format=3]
+
+[ext_resource type="Script" path="res://scripts/core/goal.gd" id="1"]
 
 [sub_resource type="StandardMaterial3D" id="mat_grass"]
 albedo_color = Color(0.16, 0.45, 0.18, 1)
@@ -16,22 +18,5 @@ size = Vector3(45, 0.1, 60)
 material = SubResource("mat_grass")
 
 [node name="Goal" type="Node3D" parent="."]
-
-[node name="PostLeft" type="CSGCylinder3D" parent="Goal"]
-position = Vector3(-3.72, 1.22, 0)
-radius = 0.06
-height = 2.44
-material = SubResource("mat_goal")
-
-[node name="PostRight" type="CSGCylinder3D" parent="Goal"]
-position = Vector3(3.72, 1.22, 0)
-radius = 0.06
-height = 2.44
-material = SubResource("mat_goal")
-
-[node name="Crossbar" type="CSGCylinder3D" parent="Goal"]
-position = Vector3(0, 2.5, 0)
-rotation = Vector3(0, 0, 1.5708)
-radius = 0.06
-height = 7.56
+script = ExtResource("1")
 material = SubResource("mat_goal")
