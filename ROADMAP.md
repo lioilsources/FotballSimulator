@@ -168,9 +168,11 @@ další proměnná, kterou D1/D2 tuning musí vzít v úvahu.
    na B3). Výsledek „TYČ“ + shake.
 2. **Flight kamera** (spring arm, damping, FOV kick) — bez ní se let nedá
    číst; dnes statická kamera za hráčem.
-3. **Foot swing** (D3): vizuální nárt + zpoždění kontaktu `SWING_DURATION`
-   od release; timing se měří k okamžiku kontaktu, ne puštění. Kalibrovat
-   `TIMING_SIGMA` znovu.
+3. **Foot swing** (D3): ~~vizuální nárt~~ — hotovo (10/2026): procedurální
+   fotbalista (Flutter + Godot, pravák/levák, pózy v golden.json), kontakt
+   zatím okamžitý. Zbývá „opravdový švih“: zpoždění kontaktu od release
+   (`Kicker.strike(lead:)` už animuje došvih), timing měřit ke kontaktu,
+   znovu kalibrovat `TIMING_SIGMA`. Gameplay měnit až po dohodě.
 4. **Verlet síť** (§6) — až po tyčích; headless test z T3.
 5. **Heatmapa + streak + session stats** — čistá data v `session_stats.gd`
    (testovatelné), render zvlášť.

@@ -13,6 +13,7 @@ const CM := preload("res://scripts/core/contact_model.gd")
 const BallScript := preload("res://scripts/core/ball_physics.gd")
 const GameState := preload("res://scripts/core/game_state.gd")
 const Swipe := preload("res://scripts/input/swipe_input.gd")
+const KickerScript := preload("res://scripts/core/kicker.gd")
 
 const GOLDEN_PATH := "res://shared/golden.json"
 ## Godot konstanty, které se od Flutteru záměrně liší (viz
@@ -37,6 +38,7 @@ func _initialize() -> void:
 	_test_flight(golden.flight, golden.dt)
 	_test_presim(golden.presim, golden.dt)
 	_test_swipe(golden.swipe)
+	_test_kicker(golden.kicker, golden.dt)
 
 	if _failures == 0:
 		print("=== ALL TESTS PASSED ===")
@@ -122,6 +124,35 @@ func _test_swipe(cases: Array) -> void:
 		var g: Dictionary = Swipe.analyze(pts, i.duration, i.dpi)
 		_check("swipe / %s" % c.name, g, c.out,
 				{"power": _tol.ratio, "curve": _tol.ratio})
+
+## Fotbalista: přehraje skript událostí, `pose` zaznamená snímek kostry.
+func _test_kicker(cases: Array, dt: float) -> void:
+	for c in cases:
+		var i: Dictionary = c["in"]
+		var k: Kicker = KickerScript.new(
+				Kicker.Foot.RIGHT if i.foot == "right" else Kicker.Foot.LEFT)
+		var poses := []
+		for op in i.script:
+			match op[0]:
+				"serve":
+					k.on_serve(_v3(op[1]))
+				"tick":
+					for n in int(op[1]):
+						k.update(dt)
+				"windup":
+					k.windup()
+				"cancel":
+					k.cancel_windup()
+				"strike":
+					k.strike(_v3(op[1]), _v3(op[2]), _v3(op[3]), op[4])
+				"pose":
+					var snap := {"phase": String(Kicker.Phase.keys()[k.phase]).to_lower()}
+					var p: Dictionary = k.pose()
+					for joint in p:
+						snap[joint] = _plain(p[joint])
+					poses.append(snap)
+		_check("kicker / %s" % c.name, {"poses": poses}, c.out,
+				{"poses": _tol.contact})
 
 # ── pomocníci ─────────────────────────────────────────────────
 

@@ -2,6 +2,7 @@ import 'dart:math' as math;
 
 import 'ball_physics.dart';
 import 'contact_model.dart';
+import 'kicker.dart';
 import 'serve_generator.dart';
 import 'tuning.dart';
 import 'vec3.dart';
@@ -20,6 +21,7 @@ class FreezeFrame {
 /// (HUD texty, freeze, trail) a volá [update] / [onKickReleased].
 class Game {
   final BallPhysics ball = BallPhysics();
+  final Kicker kicker = Kicker();
   final ServeGenerator _serveGen;
   final List<Vec3> trail = [];
 
@@ -60,6 +62,7 @@ class Game {
     ball.position = s.pos;
     ball.launch(s.vel, s.omega);
     tIdeal = presimIdealTime(s);
+    kicker.onServe(presimPositionAt(s, tIdeal));
   }
 
   /// Snímek reálného času: freeze-frame, slow-mo, fixed 120 Hz ticky.
@@ -88,6 +91,7 @@ class Game {
     final prevPos = ball.position;
     ball.step(dt);
     serveTime += dt;
+    kicker.update(dt);
     if (ball.flying) {
       trail.add(ball.position);
       if (trail.length > T.trailMaxPoints) trail.removeAt(0);
@@ -139,6 +143,17 @@ class Game {
     return apexT > 0 ? apexT : t;
   }
 
+  /// Poloha míče v čase [t] serve (pro postoj fotbalisty u ideálu).
+  static Vec3 presimPositionAt(Serve s, double t) {
+    final scratch = BallPhysics()
+      ..position = s.pos
+      ..launch(s.vel, s.omega);
+    for (var tt = 0.0; tt < t - T.physicsDt / 2; tt += T.physicsDt) {
+      scratch.step(T.physicsDt);
+    }
+    return scratch.position;
+  }
+
   void _onBallBounced(Vec3 pos, double speed) {
     if (state == GameState.serve && ball.bounceCount == 1) {
       state = GameState.kickWindow;
@@ -151,10 +166,15 @@ class Game {
   // ── swipe → kop ───────────────────────────────────────────────
 
   void onSwipeStarted() {
-    if (kickable && assist) timeScale = T.assistSlowmo;
+    if (!kickable) return;
+    if (assist) timeScale = T.assistSlowmo;
+    kicker.windup();
   }
 
-  void onSwipeCanceled() => timeScale = 1.0;
+  void onSwipeCanceled() {
+    timeScale = 1.0;
+    kicker.cancelWindup();
+  }
 
   void onKickReleased(Vec2 offset, double curve, double power) {
     timeScale = 1.0;
@@ -175,13 +195,19 @@ class Game {
     final res = ContactModel.computeKick(offset, curve, power, err, ballVelLocal);
     final errMs = (err * 1000).round();
 
+    Vec3 toWorld(Vec3 v) => right * v.x + Vec3.up * v.y - fwd * v.z;
+
     if (!res.hit) {
-      // vzduch — míč letí dál, serve uzavře druhý dopad
+      // vzduch — míč letí dál, serve uzavře druhý dopad; fotbalista kopne
+      // do místa, kde měl míč v ideálu být
+      final l = offset.limitLength(0.95);
+      final u = toWorld(Vec3(l.x, l.y, math.sqrt(1 - l.lengthSquared)));
+      kicker.strike(kicker.idealBall + u * T.ballRadius, u,
+          fwd * (T.footSpeedMax * power), power);
       _showKickText('VZDUCH! (${_signed(errMs)} ms)');
       return;
     }
 
-    Vec3 toWorld(Vec3 v) => right * v.x + Vec3.up * v.y - fwd * v.z;
     final vel = toWorld(res.vel);
     final omega = toWorld(res.omega);
     final contactWorld = ball.position + toWorld(res.contactDir) * T.ballRadius;
@@ -194,6 +220,7 @@ class Game {
         '${(omega.length / (2 * math.pi)).toStringAsFixed(1)} ot/s · '
         '${res.rating.name.toUpperCase()} (${_signed(errMs)} ms)');
     freeze = FreezeFrame(contactWorld, vel, T.freezeTime);
+    kicker.strike(contactWorld, toWorld(res.contactDir), vel, power);
   }
 
   // ── debug kopy (Fáze 0, klávesy 1/2/3) ────────────────────────
@@ -209,11 +236,10 @@ class Game {
         .withY(0)
         .normalized();
     final angle = T.debugKickAngleDeg * math.pi / 180;
-    ball.launch(
-      dir * (T.debugKickSpeed * math.cos(angle)) +
-          Vec3.up * (T.debugKickSpeed * math.sin(angle)),
-      spin,
-    );
+    final vel = dir * (T.debugKickSpeed * math.cos(angle)) +
+        Vec3.up * (T.debugKickSpeed * math.sin(angle));
+    ball.launch(vel, spin);
+    kicker.strike(ball.position - dir * T.ballRadius, -dir, vel, 1);
   }
 
   // ── výsledky ──────────────────────────────────────────────────

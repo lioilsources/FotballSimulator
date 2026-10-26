@@ -11,6 +11,7 @@ enum State { SERVE, KICK_WINDOW, FLIGHT, RESULT }
 @onready var hud: CanvasLayer = $HUD
 @onready var freeze: Control = $HUD/FreezeFrame
 @onready var swipe: Control = $SwipeOverlay
+@onready var kicker_view: Node3D = $KickerView
 
 var state := State.SERVE
 var _serve_gen: ServeGenerator
@@ -20,6 +21,7 @@ var _serve_time := 0.0     # herní čas od začátku serve (nezávislý na time
 var _t_ideal := 0.0        # ideální okamžik kontaktu (z pre-simulace)
 var _swung := false        # jeden švih na serve
 var _assist := true
+var kicker := Kicker.new()  # vizuální fotbalista (gameplay neovlivňuje)
 
 func _ready() -> void:
 	_serve_gen = ServeGenerator.new(Tuning.SERVE_SEED)
@@ -30,6 +32,9 @@ func _ready() -> void:
 	swipe.swipe_started.connect(_on_swipe_started)
 	swipe.swipe_canceled.connect(_on_swipe_canceled)
 	swipe.kick_released.connect(_on_kick_released)
+	kicker_view.kicker = kicker
+	hud.foot_toggled.connect(_toggle_foot)
+	hud.show_foot(kicker.foot)
 	_serve()
 
 func _serve() -> void:
@@ -44,12 +49,14 @@ func _serve() -> void:
 	ball.position = s.pos
 	ball.launch(s.vel, s.omega)
 	_prev_ball_z = ball.position.z
-	_t_ideal = presim_ideal_time(s,
-			1.0 / float(Engine.physics_ticks_per_second))
+	var dt := 1.0 / float(Engine.physics_ticks_per_second)
+	_t_ideal = presim_ideal_time(s, dt)
+	kicker.on_serve(presim_position_at(s, _t_ideal, dt))
 	print("── Serve: start=%v · ideál kontaktu za %.2f s" % [s.pos, _t_ideal])
 
 func _physics_process(delta: float) -> void:
 	_serve_time += delta
+	kicker.update(delta)
 
 	match state:
 		State.KICK_WINDOW, State.SERVE:
@@ -93,6 +100,19 @@ static func presim_ideal_time(s: Dictionary, dt: float) -> float:
 	scratch.free()
 	return apex_t if apex_t > 0.0 else t
 
+## Poloha míče v čase t serve (pro postoj fotbalisty u ideálu).
+static func presim_position_at(s: Dictionary, t: float, dt: float) -> Vector3:
+	var scratch: BallPhysics = BallPhysics.new()
+	scratch.position = s.pos
+	scratch.launch(s.vel, s.omega)
+	var tt := 0.0
+	while tt < t - dt / 2.0:
+		scratch._physics_process(dt)
+		tt += dt
+	var pos := scratch.position
+	scratch.free()
+	return pos
+
 func _on_ball_bounced(_pos: Vector3, _speed: float) -> void:
 	if state == State.SERVE and ball.bounce_count == 1:
 		state = State.KICK_WINDOW
@@ -103,11 +123,20 @@ func _kickable() -> bool:
 # ── swipe → kop ───────────────────────────────────────────────
 
 func _on_swipe_started() -> void:
-	if _kickable() and _assist:
+	if not _kickable():
+		return
+	if _assist:
 		Engine.time_scale = Tuning.ASSIST_SLOWMO
+	kicker.windup()
 
 func _on_swipe_canceled() -> void:
 	Engine.time_scale = 1.0
+	kicker.cancel_windup()
+
+func _toggle_foot() -> void:
+	kicker.foot = Kicker.Foot.LEFT if kicker.foot == Kicker.Foot.RIGHT \
+			else Kicker.Foot.RIGHT
+	hud.show_foot(kicker.foot)
 
 func _on_kick_released(offset: Vector2, curve: float, power: float) -> void:
 	Engine.time_scale = 1.0
@@ -130,21 +159,28 @@ func _on_kick_released(offset: Vector2, curve: float, power: float) -> void:
 	var err_ms := roundi(err * 1000.0)
 
 	if not res.hit:
-		# vzduch — míč letí dál, serve uzavře druhý dopad
+		# vzduch — míč letí dál, serve uzavře druhý dopad; fotbalista kopne
+		# do místa, kde měl míč v ideálu být
+		var l := offset.limit_length(0.95)
+		var u_loc := Vector3(l.x, l.y, sqrt(1.0 - l.length_squared()))
+		var u := right * u_loc.x + Vector3.UP * u_loc.y - fwd * u_loc.z
+		kicker.strike(kicker.ideal_ball() + u * Tuning.BALL_RADIUS, u,
+				fwd * (Tuning.FOOT_SPEED_MAX * power), power)
 		hud.show_miss(err_ms)
 		return
 
 	var vel: Vector3 = right * res.vel.x + Vector3.UP * res.vel.y - fwd * res.vel.z
 	var omega: Vector3 = right * res.omega.x + Vector3.UP * res.omega.y - fwd * res.omega.z
-	var contact_world: Vector3 = ball.position + Tuning.BALL_RADIUS \
-			* (right * res.contact_dir.x + Vector3.UP * res.contact_dir.y
-					- fwd * res.contact_dir.z)
+	var contact_dir: Vector3 = right * res.contact_dir.x \
+			+ Vector3.UP * res.contact_dir.y - fwd * res.contact_dir.z
+	var contact_world: Vector3 = ball.position + Tuning.BALL_RADIUS * contact_dir
 
 	trail.clear_trail()
 	ball.launch(vel, omega)
 	state = State.FLIGHT
 	_result_reported = false
 	hud.show_kick(vel, omega, res.rating, err_ms)
+	kicker.strike(contact_world, contact_dir, vel, power)
 	freeze.trigger(contact_world, vel)
 
 # ── debug kopy (Fáze 0, zůstávají pro ladění) ────────────────
@@ -162,6 +198,8 @@ func _unhandled_input(event: InputEvent) -> void:
 			KEY_A:
 				_assist = not _assist
 				print("Assist slow-mo: %s" % ("ON" if _assist else "OFF"))
+			KEY_F:
+				_toggle_foot()
 
 func _debug_kick(spin: Vector3) -> void:
 	if state == State.FLIGHT:
@@ -179,6 +217,7 @@ func _debug_kick(spin: Vector3) -> void:
 	var vel := dir * Tuning.DEBUG_KICK_SPEED * cos(angle) \
 			+ Vector3.UP * Tuning.DEBUG_KICK_SPEED * sin(angle)
 	ball.launch(vel, spin)
+	kicker.strike(ball.position - dir * Tuning.BALL_RADIUS, -dir, vel, 1.0)
 	print("Debug kop: %.0f m/s, spin=%v" % [vel.length(), spin])
 
 # ── výsledky ──────────────────────────────────────────────────

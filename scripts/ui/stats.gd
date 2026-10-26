@@ -13,7 +13,10 @@ const RATING_NAMES := {
 	ContactModel.Rating.MISS: "MISS",
 }
 
+signal foot_toggled
+
 @onready var kick_label: Label = $Root/KickLabel
+@onready var foot_button: Button = $Root/FootButton
 @onready var result_label: Label = $Root/ResultLabel
 
 var _kick_tween: Tween
@@ -30,6 +33,13 @@ func show_kick(vel: Vector3, omega: Vector3, rating: int, err_ms: int) -> void:
 func show_miss(err_ms: int) -> void:
 	kick_label.text = "VZDUCH! (%+d ms)" % err_ms
 	_fade_kick_label()
+
+func _ready() -> void:
+	foot_button.pressed.connect(func() -> void: foot_toggled.emit())
+
+## Popisek přepínače pravák/levák (Kicker.Foot).
+func show_foot(foot: int) -> void:
+	foot_button.text = "PRAVÁK" if foot == Kicker.Foot.RIGHT else "LEVÁK"
 
 func show_result(text: String, color: Color) -> void:
 	result_label.text = text

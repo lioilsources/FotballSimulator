@@ -65,6 +65,29 @@ const HUD_FADE_TIME := 0.5           # s; doba vyblednutí kick overlaye
 const RESULT_PAUSE := 1.4            # s herního času mezi výsledkem a dalším serve
 const TRAIL_MAX_POINTS := 600        # strop bodů debug stopy
 
+# ── Fotbalista (vizuál, kicker.gd) ────────────────────────────
+# Jen prezentace — kontakt dál nastává okamžitě při puštění swipu.
+const KICKER_THIGH := 0.46          # m; stehno
+const KICKER_SHIN := 0.44           # m; holeň (kotník)
+const KICKER_FOOT_LEN := 0.24       # m; kotník → špička
+const KICKER_HIP_HEIGHT := 0.93     # m; pánev v postoji
+const KICKER_HIP_HALF_WIDTH := 0.1
+const KICKER_TORSO := 0.5           # pánev → hrudník (ramena)
+const KICKER_SHOULDER_HALF_WIDTH := 0.2
+const KICKER_UPPER_ARM := 0.3
+const KICKER_FOREARM := 0.28
+const KICKER_HEAD_RADIUS := 0.11
+const KICKER_STAND_BACK := 0.5      # pánev za ideálním bodem kontaktu (z)
+const KICKER_STAND_SIDE := 0.22     # pánev stranou od míče (na stranu stojné nohy)
+const KICKER_PLANT_SIDE := 0.3      # stojná noha vedle míče při nápřahu
+const KICKER_FOLLOW_RATE := 5.0     # /s; jak rychle dojde do postoje
+const KICKER_WINDUP_TIME := 0.22    # s herního času do plného nápřahu
+const KICKER_FOLLOW_TIME := 0.35    # s dokopnutí po kontaktu
+const KICKER_RECOVER_TIME := 0.6    # s návratu do postoje
+const KICKER_SWOOSH_TIME := 0.3     # s; stopa švihu nohy
+const KICKER_GHOST_ALPHA := 0.35    # průhlednost, dokud míč přilétá (nezakrýt ho)
+const KICKER_FADE_RATE := 10.0      # /s; přechod průhlednosti
+
 # ── Hřiště / brána ────────────────────────────────────────────
 # Bránu staví goal.gd z těchhle hodnot (tyče, břevno, umístění) — scéna
 # pitch.tscn nemá žádné rozměry natvrdo.

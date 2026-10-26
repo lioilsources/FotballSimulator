@@ -30,6 +30,8 @@ class Vec3 {
 
   Vec3 withY(double ny) => Vec3(x, ny, z);
 
+  Vec3 lerp(Vec3 o, double t) => this + (o - this) * t;
+
   @override
   bool operator ==(Object other) =>
       other is Vec3 && other.x == x && other.y == y && other.z == z;

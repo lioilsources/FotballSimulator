@@ -15,6 +15,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:fotball_simulator/core/ball_physics.dart';
 import 'package:fotball_simulator/core/contact_model.dart';
 import 'package:fotball_simulator/core/game.dart';
+import 'package:fotball_simulator/core/kicker.dart';
 import 'package:fotball_simulator/core/serve_generator.dart';
 import 'package:fotball_simulator/core/tuning.dart';
 import 'package:fotball_simulator/core/vec3.dart';
@@ -122,6 +123,39 @@ final _swipeCases = {
   'krátký = zrušeno': _swipeIn(_line(Offset.zero, const Offset(0, -15), 4), 0.3, 160),
 };
 
+// Fotbalista: skript událostí, `pose` zaznamená snímek kostry + fázi.
+Map<String, Object> _kickerIn(String foot, List<List<Object>> script) =>
+    {'foot': foot, 'script': script};
+
+List<Object> _strikeOp(Vec3 ball, Vec3 n, Vec3 vel, double power) {
+  final u = n.normalized();
+  return ['strike', _v(ball + u * T.ballRadius), _v(u), _v(vel), power];
+}
+
+final _kickerCases = {
+  for (final foot in ['right', 'left'])
+    for (final (name, n, vel, power) in [
+      ('perfektní volej', const Vec3(0, -0.12, 1), const Vec3(0.3, 4, -31), 1.0),
+      ('pozdě nad středem', const Vec3(0.1, 0.45, 1), const Vec3(0, -0.6, -4), 0.8),
+      ('podebraný slabší', const Vec3(-0.3, -0.5, 1), const Vec3(-4, 12, -18), 0.6),
+    ])
+      '$foot · $name': _kickerIn(foot, [
+        ['serve', _v(const Vec3(-0.4, T.idealKickHeight, -1.7))],
+        ['tick', 30], ['pose'],
+        ['serve', _v(const Vec3(-0.3, T.idealKickHeight, -1.9))],
+        ['tick', 90], ['windup'], ['tick', 12], ['pose'],
+        ['tick', 30], ['pose'],
+        _strikeOp(const Vec3(-0.25, 0.5, -1.85), n, vel, power), ['pose'],
+        ['tick', 20], ['pose'],
+        ['tick', 40], ['pose'],
+        ['tick', 80], ['pose'],
+      ]),
+  'right · zrušený nápřah': _kickerIn('right', [
+    ['serve', _v(const Vec3(0.5, T.idealKickHeight, -2))],
+    ['tick', 60], ['windup'], ['tick', 15], ['cancel'], ['tick', 10], ['pose'],
+  ]),
+};
+
 // ── výpočty (stejná logika jako tests/golden_test.gd) ─────────
 
 Map<String, Object> _runContact(Map<String, dynamic> i) {
@@ -157,6 +191,35 @@ Map<String, Object> _runFlight(Map<String, dynamic> i) {
     'apex': apex, 'pos': _v(ball.position), 'vel': _v(ball.vel),
     'omega': _v(ball.omega),
   };
+}
+
+Map<String, Object> _runKicker(Map<String, dynamic> i) {
+  final k = Kicker(foot: Foot.values.byName(i['foot'] as String));
+  final poses = <Object>[];
+  for (final op in i['script'] as List) {
+    final args = op as List;
+    switch (args[0] as String) {
+      case 'serve':
+        k.onServe(_vec(args[1] as List));
+      case 'tick':
+        for (var n = 0; n < (args[1] as num); n++) {
+          k.update(T.physicsDt);
+        }
+      case 'windup':
+        k.windup();
+      case 'cancel':
+        k.cancelWindup();
+      case 'strike':
+        k.strike(_vec(args[1] as List), _vec(args[2] as List),
+            _vec(args[3] as List), (args[4] as num).toDouble());
+      case 'pose':
+        poses.add({
+          'phase': k.phase.name,
+          for (final MapEntry(:key, :value) in k.pose().entries) key.name: _v(value),
+        });
+    }
+  }
+  return {'poses': poses};
 }
 
 Map<String, Object> _runPresim(Map<String, dynamic> i) => {
@@ -229,6 +292,7 @@ void main() {
           for (final i in _presimInputs()) {'in': i, 'out': _runPresim(i)}
         ],
         'swipe': _section(_swipeCases, _runSwipe),
+        'kicker': _section(_kickerCases, _runKicker),
       };
       _file.parent.createSync(recursive: true);
       _file.writeAsStringSync(
@@ -262,6 +326,11 @@ void main() {
   test('pre-simulace ideálního okamžiku', () {
     _compare('presim', golden['presim'] as List, _runPresim,
         {'t_ideal': (golden['dt'] as num).toDouble() * tol['ticks']!});
+  });
+
+  test('fotbalista (pózy)', () {
+    _compare('kicker', golden['kicker'] as List, _runKicker,
+        {'poses': tol['contact']!});
   });
 
   test('swipe analyze', () {

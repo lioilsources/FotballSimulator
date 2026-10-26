@@ -69,6 +69,29 @@ abstract final class Tuning {
   static const resultPause = 1.4; // s herního času mezi výsledkem a dalším serve
   static const trailMaxPoints = 600; // strop bodů stopy
 
+  // ── Fotbalista (vizuál, core/kicker) ─────────────────────────
+  // Jen prezentace — kontakt dál nastává okamžitě při puštění swipu.
+  static const kickerThigh = 0.46; // m; stehno
+  static const kickerShin = 0.44; // m; holeň (kotník)
+  static const kickerFootLen = 0.24; // m; kotník → špička
+  static const kickerHipHeight = 0.93; // m; pánev v postoji
+  static const kickerHipHalfWidth = 0.1;
+  static const kickerTorso = 0.5; // pánev → hrudník (ramena)
+  static const kickerShoulderHalfWidth = 0.2;
+  static const kickerUpperArm = 0.3;
+  static const kickerForearm = 0.28;
+  static const kickerHeadRadius = 0.11;
+  static const kickerStandBack = 0.5; // pánev za ideálním bodem kontaktu (z)
+  static const kickerStandSide = 0.22; // pánev stranou od míče (na stranu stojné nohy)
+  static const kickerPlantSide = 0.3; // stojná noha vedle míče při nápřahu
+  static const kickerFollowRate = 5.0; // /s; jak rychle dojde do postoje
+  static const kickerWindupTime = 0.22; // s herního času do plného nápřahu
+  static const kickerFollowTime = 0.35; // s dokopnutí po kontaktu
+  static const kickerRecoverTime = 0.6; // s návratu do postoje
+  static const kickerSwooshTime = 0.3; // s; stopa švihu nohy
+  static const kickerGhostAlpha = 0.35; // průhlednost, dokud míč přilétá (nezakrýt ho)
+  static const kickerFadeRate = 10.0; // /s; přechod průhlednosti
+
   // ── Hřiště / brána ────────────────────────────────────────────
   static const goalDistance = 18.0; // m od hráče (origin)
   static const goalHalfWidth = 3.66; // vnitřní polovina šířky brány

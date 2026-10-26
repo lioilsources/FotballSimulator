@@ -5,6 +5,7 @@ import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
 
 import '../core/game.dart';
+import '../core/kicker.dart';
 import '../core/tuning.dart';
 import '../core/vec3.dart';
 import '../render/scene_painter.dart';
@@ -84,7 +85,11 @@ class _GameScreenState extends State<GameScreen>
     _game.onSwipeCanceled();
   }
 
-  /// Debug klávesy (simulátor / připojená klávesnice): 1/2/3 kopy, A assist.
+  void _toggleFoot() => setState(() => _game.kicker.foot =
+      _game.kicker.foot == Foot.right ? Foot.left : Foot.right);
+
+  /// Debug klávesy (simulátor / připojená klávesnice): 1/2/3 kopy, A assist,
+  /// F pravák/levák.
   KeyEventResult _onKey(FocusNode node, KeyEvent e) {
     if (e is! KeyDownEvent) return KeyEventResult.ignored;
     switch (e.logicalKey) {
@@ -97,6 +102,8 @@ class _GameScreenState extends State<GameScreen>
         _game.debugKick(const Vec3(-T.debugTopspin, 0, 0));
       case LogicalKeyboardKey.keyA:
         setState(() => _game.assist = !_game.assist);
+      case LogicalKeyboardKey.keyF:
+        _toggleFoot();
       default:
         return KeyEventResult.ignored;
     }
@@ -134,9 +141,19 @@ class _GameScreenState extends State<GameScreen>
               Positioned(
                 top: pad.top + 8,
                 right: 12,
-                child: _AssistToggle(
+                child: _Chip(
+                  label: _game.assist ? 'SLOW-MO ON' : 'SLOW-MO OFF',
                   on: _game.assist,
                   onTap: () => setState(() => _game.assist = !_game.assist),
+                ),
+              ),
+              Positioned(
+                top: pad.top + 8,
+                left: 12,
+                child: _Chip(
+                  label: _game.kicker.foot == Foot.right ? 'PRAVÁK' : 'LEVÁK',
+                  on: true,
+                  onTap: _toggleFoot,
                 ),
               ),
             ]),
@@ -189,10 +206,12 @@ class _GameScreenState extends State<GameScreen>
   }
 }
 
-class _AssistToggle extends StatelessWidget {
+/// Přepínač v rohu (slow-mo assist, pravák/levák).
+class _Chip extends StatelessWidget {
+  final String label;
   final bool on;
   final VoidCallback onTap;
-  const _AssistToggle({required this.on, required this.onTap});
+  const _Chip({required this.label, required this.on, required this.onTap});
 
   @override
   Widget build(BuildContext context) {
@@ -205,7 +224,7 @@ class _AssistToggle extends StatelessWidget {
           borderRadius: BorderRadius.circular(16),
         ),
         child: Text(
-          on ? 'SLOW-MO ON' : 'SLOW-MO OFF',
+          label,
           style: const TextStyle(
               color: Colors.white, fontSize: 12, fontWeight: FontWeight.w700),
         ),

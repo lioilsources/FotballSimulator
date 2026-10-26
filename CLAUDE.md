@@ -74,7 +74,15 @@ editoru, nemá vliv na výsledek.
 
 Ovládání: swipe na overlay míči dole (touch-down = kontaktní bod, oblouk =
 faleš, rychlost = síla, puštění = timing). Klávesa `A` přepíná assist
-slow-mo. Debug kopy: `1` přímý, `2` faleš (sidespin), `3` topspin.
+slow-mo, `F` (nebo tlačítko vlevo nahoře) pravák/levák. Debug kopy: `1`
+přímý, `2` faleš (sidespin), `3` topspin.
+
+Fotbalista (`scripts/core/kicker.gd` + `scripts/render/kicker_view.gd`,
+Flutter `lib/core/kicker.dart` + `ScenePainter._kicker`): procedurální
+kostra s IK nohy, čistě vizuální — kontakt je dál okamžitý při puštění.
+Nárt jde do skutečného kontaktního bodu (pozdě = nad středem, brzy = pod,
+MISS = do místa ideálu). Dokud míč přilétá, je průhledný (stojí mezi
+kamerou a míčem). `strike(..., lead)` je příprava na „opravdový švih“ (D3).
 
 ## Flutter port (`flutter_app/`)
 
