@@ -103,7 +103,7 @@ class Game {
       case GameState.flight:
         if (!_resultReported) _checkGoalCrossing(prevPos);
         // míč daleko za bránou už nemá co ukázat
-        if (ball.position.z < -(T.goalDistance + 10.0)) {
+        if (ball.position.z < -(T.goalDistance + T.flightEndBeyondGoal)) {
           ball.stop();
           _finishServe('', 0xFFFFFFFF);
         }

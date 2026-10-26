@@ -54,12 +54,16 @@ const SWIPE_SAMPLE_MIN_PX := 2.0     # posun prstu menší než tohle se nevzork
 const SWIPE_MAX_POINTS := 256        # strop vzorků dráhy (dlouhý drag v slow-mo)
 const SWIPE_POWER_FULL_INS := 12.0   # rychlost prstu v palcích/s = plná síla (DPI normalizace)
 const OVERLAY_BALL_SCREEN_FRAC := 0.35  # průměr overlay míče vůči šířce obrazovky
+const OVERLAY_BOTTOM_MARGIN_PX := 40.0  # mezera overlay míče od spodní hrany
 const ASSIST_DEFAULT := true         # slow-mo od touch-down (klávesa A přepíná)
 const ASSIST_SLOWMO := 0.6
 
 # ── Prezentace (§5) ───────────────────────────────────────────
 const FREEZE_TIME := 0.15            # s reálného času; freeze-frame kontaktu
 const HUD_FADE_DELAY := 2.5          # s; jak dlouho drží kick overlay
+const HUD_FADE_TIME := 0.5           # s; doba vyblednutí kick overlaye
+const RESULT_PAUSE := 1.4            # s herního času mezi výsledkem a dalším serve
+const TRAIL_MAX_POINTS := 600        # strop bodů debug stopy
 
 # ── Hřiště / brána ────────────────────────────────────────────
 # Bránu staví goal.gd z těchhle hodnot (tyče, břevno, umístění) — scéna
@@ -68,6 +72,7 @@ const GOAL_DISTANCE := 18.0          # m od hráče (origin)
 const GOAL_HALF_WIDTH := 3.66        # vnitřní polovina šířky brány
 const GOAL_HEIGHT := 2.44            # spodní hrana břevna
 const POST_RADIUS := 0.06            # tyče i břevno
+const FLIGHT_END_BEYOND_GOAL := 10.0  # m za bránou → let končí, není co ukázat
 
 # ── Serve / debug (Fáze 0) ────────────────────────────────────
 const SERVE_SEED := 12345            # -1 = náhodný seed (hra); pevný = replaye

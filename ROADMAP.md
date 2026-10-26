@@ -67,6 +67,10 @@
 
 - [x] `tests/run_all.sh`: spustí import + všechny `tests/*_test.gd`, agreguje
       exit code, cesta k Godotu z `$GODOT` env (macOS default z CLAUDE.md).
+      *Opraveno 10/2026: runner propouštěl selhání (PIPESTATUS po `if`)
+      a Godot vrací 0 i pro neparsovatelný skript → vyžaduje se řádek
+      `=== ALL TESTS PASSED ===`.*
+- [x] Synchronizace tuningu Godot ↔ Flutter: `flutter_app/test/tuning_sync_test.dart`.
 - [ ] GitHub Actions: `godotengine/godot` 4.7.1 **standard** Linux build
       (GDScript nepotřebuje mono), cache `.godot/`, krok `--import`, pak
       `run_all.sh`. Přesunuto z Fáze 3 sem — bez CI se tuning pass rozbije
@@ -85,8 +89,8 @@
       složku příchozí rychlosti; silný kop ji přebije (B2).
 - [x] `gameplay_test`: rozměry brány odpovídají tuningu (B3, brána
       generovaná z `goal.gd`).
-- [ ] Pinned výstupy contact modelu pro 5–6 kanonických kopů (golden
-      hodnoty jako u physics_test) — chytí nechtěné změny při tuningu D1/D2.
+- [x] Pinned výstupy contact modelu — `shared/golden.json` (16 kopů, 6 letů,
+      pre-simulace, swipe), generuje Flutter, ověřují obě verze.
 
 ### T2 — Pokrytí mezer
 

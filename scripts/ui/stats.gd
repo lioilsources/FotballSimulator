@@ -44,4 +44,4 @@ func _fade_kick_label() -> void:
 	kick_label.modulate.a = 1.0
 	_kick_tween = create_tween()
 	_kick_tween.tween_interval(T.HUD_FADE_DELAY)
-	_kick_tween.tween_property(kick_label, "modulate:a", 0.0, 0.5)
+	_kick_tween.tween_property(kick_label, "modulate:a", 0.0, T.HUD_FADE_TIME)

@@ -44,7 +44,8 @@ func _serve() -> void:
 	ball.position = s.pos
 	ball.launch(s.vel, s.omega)
 	_prev_ball_z = ball.position.z
-	_t_ideal = _presim_ideal_time(s)
+	_t_ideal = presim_ideal_time(s,
+			1.0 / float(Engine.physics_ticks_per_second))
 	print("── Serve: start=%v · ideál kontaktu za %.2f s" % [s.pos, _t_ideal])
 
 func _physics_process(delta: float) -> void:
@@ -60,7 +61,7 @@ func _physics_process(delta: float) -> void:
 			if not _result_reported:
 				_check_goal_crossing()
 			# míč daleko za bránou už nemá co ukázat
-			if ball.position.z < -(Tuning.GOAL_DISTANCE + 10.0):
+			if ball.position.z < -(Tuning.GOAL_DISTANCE + Tuning.FLIGHT_END_BEYOND_GOAL):
 				ball.stop()
 				_finish_serve("", Color.WHITE)
 
@@ -70,12 +71,12 @@ func _physics_process(delta: float) -> void:
 
 ## Pre-simulace serve: po prvním odskoku míč stoupá → vrchol → klesá;
 ## ideál = průchod IDEAL_KICK_HEIGHT při klesání (§3.5). Slabý odskok
-## (nedosáhne té výšky) → ideál = vrchol odskoku.
-func _presim_ideal_time(s: Dictionary) -> float:
+## (nedosáhne té výšky) → ideál = vrchol odskoku. Statická = čistá funkce
+## serve → čas, testovaná proti shared/golden.json.
+static func presim_ideal_time(s: Dictionary, dt: float) -> float:
 	var scratch: BallPhysics = BallPhysics.new()
 	scratch.position = s.pos
 	scratch.launch(s.vel, s.omega)
-	var dt := 1.0 / float(Engine.physics_ticks_per_second)
 	var t := 0.0
 	var apex_t := 0.0
 	var apex_h := 0.0
@@ -214,5 +215,5 @@ func _finish_serve(msg: String, color: Color) -> void:
 	swipe.enabled = false
 	if msg != "":
 		hud.show_result(msg, color)
-	await get_tree().create_timer(1.4).timeout
+	await get_tree().create_timer(Tuning.RESULT_PAUSE).timeout
 	_serve()

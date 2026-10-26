@@ -58,21 +58,23 @@ abstract final class Tuning {
   static const swipePowerFullIns = 12.0; // rychlost prstu v palcích/s = plná síla
   static const logicalDpi = 160.0; // Flutter logical px ≈ 1/160 palce (Android i iOS)
   static const overlayBallScreenFrac = 0.35; // průměr overlay míče vůči šířce obrazovky
+  static const overlayBottomMarginPx = 40.0; // mezera overlay míče od spodní hrany
   static const assistDefault = true; // slow-mo od touch-down
   static const assistSlowmo = 0.6;
 
   // ── Prezentace (§5) ───────────────────────────────────────────
   static const freezeTime = 0.15; // s reálného času; freeze-frame kontaktu
   static const hudFadeDelay = 2.5; // s; jak dlouho drží kick overlay
-  static const hudFadeTime = 0.5;
+  static const hudFadeTime = 0.5; // s; doba vyblednutí kick overlaye
   static const resultPause = 1.4; // s herního času mezi výsledkem a dalším serve
-  static const trailMaxPoints = 600;
+  static const trailMaxPoints = 600; // strop bodů stopy
 
   // ── Hřiště / brána ────────────────────────────────────────────
   static const goalDistance = 18.0; // m od hráče (origin)
   static const goalHalfWidth = 3.66; // vnitřní polovina šířky brány
   static const goalHeight = 2.44;
   static const goalPostRadius = 0.06;
+  static const flightEndBeyondGoal = 10.0; // m za bránou → let končí
   static const goalDepth = 2.0; // hloubka sítě (jen vizuál, kolize = Fáze 2)
 
   // ── Kamera (main.tscn) ────────────────────────────────────────

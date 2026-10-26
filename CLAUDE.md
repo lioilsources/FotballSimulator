@@ -32,6 +32,7 @@ GODOT="$GODOT" tests/run_all.sh
 "$GODOT" --headless --path . --script res://tests/contact_test.gd   # tabulkové případy kontaktu
 "$GODOT" --headless --path . --script res://tests/swipe_test.gd     # geometrie gesta (síla, křivka, strop vzorků)
 "$GODOT" --headless --path . --script res://tests/gameplay_test.gd  # end-to-end serve→kop→gól, slow-mo reset, brána
+"$GODOT" --headless --path . --script res://tests/golden_test.gd    # shoda s Flutterem přes shared/golden.json
 
 # po přidání nového class_name souboru před headless během přegenerovat cache:
 "$GODOT" --headless --path . --import
@@ -83,7 +84,16 @@ složku mimo Godot import.
 
 - `lib/core/` — 1:1 port `tuning`, `ball_physics`, `contact_model`,
   `serve_generator`, `game_state` (→ `game.dart`, čistý Dart bez Flutteru).
-  **Konstanty držet synchronní s `scripts/util/tuning.gd`.**
+  **Konstanty držet synchronní s `scripts/util/tuning.gd`** — hlídá to
+  `test/tuning_sync_test.dart` (parsuje tuning.gd, běží v CI). Nová
+  konstanta = řádek v `test/support/godot_tuning.dart` (nebo `flutterOnly`
+  s důvodem).
+- **Golden kontrakt `shared/golden.json`**: vstupy + výstupy contact modelu,
+  letu, pre-simulace a swipe analýzy + snapshot tuningu. Flutter vede:
+  po záměrné změně fyziky `UPDATE_GOLDEN=1 flutter test test/golden_test.dart`,
+  pak portovat do Godotu, dokud neprojde `tests/golden_test.gd`. Tolerance
+  počítají s float32 Vector3 v Godotu. Godot testy zatím nejsou v CI —
+  po portu je pustit lokálně (`tests/run_all.sh`).
 - Serve RNG je vlastní PCG32 — sekvence se neshoduje s Godotem.
 - Kamera: portrait má navíc minimální horizontální FOV 60° a lens shift
   (`cameraMinHFovDeg`, `cameraCenterYFrac`) — s čistě vertikálním FOV 55°

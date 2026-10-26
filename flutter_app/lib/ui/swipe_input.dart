@@ -23,7 +23,7 @@ class SwipeTracker {
       size.width * T.overlayBallScreenFrac * 0.5;
 
   static Offset overlayCenter(Size size, double bottomInset) => Offset(
-      size.width * 0.5, size.height - overlayRadius(size) - 40.0 - bottomInset);
+      size.width * 0.5, size.height - overlayRadius(size) - T.overlayBottomMarginPx - bottomInset);
 
   /// true = gesto začalo (dotyk na overlay míči).
   bool start(Offset pos, Duration t, Size size, double bottomInset) {
@@ -67,34 +67,44 @@ class SwipeTracker {
     tracking = false;
     points.add(pos);
     final duration = (t - _tStart).inMicroseconds / 1e6;
+    final g = analyze(points, duration, T.logicalDpi);
+    return g.ok ? KickIntent(contactOffset, g.curve, g.power) : null;
+  }
 
+  /// Vyhodnotí dokončené gesto (port `SwipeInput.analyze`). ok = false pro
+  /// tah kratší než swipeMinLengthPx, tětivu v dead-zone nebo tah kratší
+  /// než swipeMinDuration. Souřadnice jsou obrazovkové (y dolů).
+  static ({bool ok, double power, double curve}) analyze(
+      List<Offset> pts, double duration, double dpi) {
+    const cancel = (ok: false, power: 0.0, curve: 0.0);
+    if (pts.length < 2) return cancel;
     var pathLen = 0.0;
-    for (var i = 1; i < points.length; i++) {
-      pathLen += (points[i] - points[i - 1]).distance;
+    for (var i = 1; i < pts.length; i++) {
+      pathLen += (pts[i] - pts[i - 1]).distance;
     }
-    final chord = points.last - points.first;
+    final chord = pts.last - pts.first;
 
     if (pathLen < T.swipeMinLengthPx ||
         chord.distance < T.swipeDeadzonePx ||
         duration < T.swipeMinDuration) {
-      return null;
+      return cancel;
     }
 
-    // síla: rychlost prstu normalizovaná na DPI (logical px/s → in/s)
+    // síla: rychlost prstu normalizovaná na DPI (px/s → in/s)
     final power =
-        ((pathLen / duration) / T.logicalDpi / T.swipePowerFullIns).clamp(0.0, 1.0);
+        ((pathLen / duration) / dpi / T.swipePowerFullIns).clamp(0.0, 1.0);
 
     // zakřivení: max podepsaná kolmá odchylka od tětivy / půlka tětivy;
     // kladné = oblouk doprava vůči směru tahu
     final dir = chord / chord.distance;
     var maxDev = 0.0;
-    for (final p in points) {
-      final rel = p - points.first;
+    for (final p in pts) {
+      final rel = p - pts.first;
       final dev = dir.dx * rel.dy - dir.dy * rel.dx;
       if (dev.abs() > maxDev.abs()) maxDev = dev;
     }
     final curve = (maxDev / (chord.distance * 0.5)).clamp(-1.0, 1.0);
 
-    return KickIntent(contactOffset, curve, power);
+    return (ok: true, power: power, curve: curve);
   }
 }

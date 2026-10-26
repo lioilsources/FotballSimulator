@@ -2,7 +2,7 @@ extends MeshInstance3D
 ## Debug trail letu (Fáze 0, VOLLEY_PLAN.md §7): line strip za míčem ve
 ## world space. top_level, aby ho nerotoval/neposouval rodičovský míč.
 
-const MAX_POINTS := 600
+const T := preload("res://scripts/util/tuning.gd")
 
 var _points := PackedVector3Array()
 var _ball: BallPhysics
@@ -21,8 +21,8 @@ func _physics_process(_delta: float) -> void:
 	if _ball == null or not _ball.flying:
 		return
 	_points.append(_ball.global_position)
-	if _points.size() > MAX_POINTS:
-		_points = _points.slice(_points.size() - MAX_POINTS)
+	if _points.size() > T.TRAIL_MAX_POINTS:
+		_points = _points.slice(_points.size() - T.TRAIL_MAX_POINTS)
 	_rebuild()
 
 func clear_trail() -> void:
