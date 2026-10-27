@@ -126,7 +126,7 @@ func _overlay_radius() -> float:
 	return size.x * T.OVERLAY_BALL_SCREEN_FRAC * 0.5
 
 func _overlay_center() -> Vector2:
-	return Vector2(size.x * 0.5, size.y - _overlay_radius() - 40.0)
+	return Vector2(size.x * 0.5, size.y - _overlay_radius() - T.OVERLAY_BOTTOM_MARGIN_PX)
 
 func _draw() -> void:
 	var center := _overlay_center()

@@ -10,10 +10,13 @@ GODOT="${GODOT:-/Volumes/YOTTA/Applications/Godot_mono.app/Contents/MacOS/Godot}
 fail=0
 for t in tests/*_test.gd; do
 	echo "▶ $t"
-	if ! "$GODOT" --headless --path . --script "res://$t" 2>&1 | grep -v -E '^Godot Engine|^$'; then
-		:
-	fi
-	if [ "${PIPESTATUS[0]}" -ne 0 ]; then
+	out=$("$GODOT" --headless --path . --script "res://$t" 2>&1)
+	code=$?
+	echo "$out" | grep -v -E '^Godot Engine|^$'
+	# Godot vrací 0 i když skript nejde naparsovat → vyžadovat i závěrečný
+	# řádek testu, ne jen exit code
+	if [ $code -ne 0 ] || ! echo "$out" | grep -q '=== ALL TESTS PASSED ==='; then
+		echo "✘ $t selhal (exit $code)"
 		fail=1
 	fi
 done

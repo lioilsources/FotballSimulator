@@ -1,10 +1,11 @@
-[gd_scene load_steps=9 format=3]
+[gd_scene load_steps=10 format=3]
 
 [ext_resource type="Script" path="res://scripts/core/game_state.gd" id="1"]
 [ext_resource type="PackedScene" path="res://scenes/pitch.tscn" id="2"]
 [ext_resource type="PackedScene" path="res://scenes/ball.tscn" id="3"]
 [ext_resource type="PackedScene" path="res://scenes/ui/hud.tscn" id="4"]
 [ext_resource type="PackedScene" path="res://scenes/ui/swipe_overlay.tscn" id="5"]
+[ext_resource type="Script" path="res://scripts/render/kicker_view.gd" id="6"]
 
 [sub_resource type="ProceduralSkyMaterial" id="sky_mat"]
 sky_top_color = Color(0.25, 0.42, 0.66, 1)
@@ -28,6 +29,9 @@ script = ExtResource("1")
 
 [node name="Ball" parent="." instance=ExtResource("3")]
 position = Vector3(0, 0.11, -2)
+
+[node name="KickerView" type="Node3D" parent="."]
+script = ExtResource("6")
 
 [node name="Camera3D" type="Camera3D" parent="."]
 position = Vector3(0, 1.4, 3.2)

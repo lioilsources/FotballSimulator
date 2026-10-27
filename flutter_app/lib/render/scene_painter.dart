@@ -5,6 +5,7 @@ import 'dart:ui' show PointMode;
 import 'package:flutter/material.dart';
 
 import '../core/game.dart';
+import '../core/kicker.dart';
 import '../core/tuning.dart';
 import '../core/vec3.dart';
 import 'camera.dart';
@@ -29,7 +30,9 @@ class ScenePainter extends CustomPainter {
     final ballBehindGoal = game.ball.position.z < -T.goalDistance;
     if (ballBehindGoal) _ballAndTrail(canvas, cam);
     _goal(canvas, cam);
-    if (!ballBehindGoal) _ballAndTrail(canvas, cam);
+    _kickerShadow(canvas, cam);
+    if (!ballBehindGoal) _ballAndTrail(canvas, cam, kicker: true);
+    if (ballBehindGoal) _kicker(canvas, cam, const []);
     _freezeFrame(canvas, cam);
   }
 
@@ -148,9 +151,13 @@ class ScenePainter extends CustomPainter {
 
   // ── míč ───────────────────────────────────────────────────────
 
-  void _ballAndTrail(Canvas canvas, Camera cam) {
+  /// Stín, trail a míč; s [kicker] se míč řadí do hloubky s fotbalistou.
+  void _ballAndTrail(Canvas canvas, Camera cam, {bool kicker = false}) {
     final ball = game.ball;
-    if (cam.isBehind(ball.position)) return;
+    if (cam.isBehind(ball.position)) {
+      if (kicker) _kicker(canvas, cam, const []);
+      return;
+    }
 
     // stín — slábne s výškou
     final ground = ball.position.withY(0.005);
@@ -178,6 +185,16 @@ class ScenePainter extends CustomPainter {
       );
     }
 
+    final sphere = (cam.depth(ball.position), () => _ballSphere(canvas, cam));
+    if (kicker) {
+      _kicker(canvas, cam, [sphere]);
+    } else {
+      sphere.$2();
+    }
+  }
+
+  void _ballSphere(Canvas canvas, Camera cam) {
+    final ball = game.ball;
     final c = cam.project(ball.position);
     final r = math.max(2.0, cam.scaleAt(ball.position, T.ballRadius));
     canvas.drawCircle(
@@ -202,6 +219,149 @@ class ScenePainter extends CustomPainter {
       final p = cam.project(ball.position + axis * 0.095);
       canvas.drawCircle(
           p, dotR, Paint()..color = Color.fromRGBO(26, 26, 31, 0.4 + 0.5 * facing));
+    }
+  }
+
+  // ── fotbalista ────────────────────────────────────────────────
+
+  static const _skin = Color(0xFFE0AC86);
+  static const _jersey = Color(0xFFC8302A);
+  static const _jerseyDark = Color(0xFF9E2420);
+  static const _shorts = Color(0xFFF2F2F2);
+  static const _sock = Color(0xFFC8302A);
+  static const _boot = Color(0xFF1C1C1F);
+  static const _hair = Color(0xFF3A2A1E);
+
+  void _kickerShadow(Canvas canvas, Camera cam) {
+    final pose = game.kicker.pose();
+    for (final j in [Joint.pelvis, Joint.ankleL, Joint.ankleR]) {
+      final g = pose[j]!.withY(0.004);
+      final w = cam.scaleAt(g, j == Joint.pelvis ? 0.32 : 0.14);
+      final lift = j == Joint.pelvis ? 0.0 : (pose[j]!.y - 0.08).clamp(0.0, 0.8);
+      canvas.drawOval(
+        Rect.fromCenter(center: cam.project(g), width: w * 2, height: w * 0.6),
+        Paint()
+          ..color = Color.fromRGBO(
+              0, 0, 0, 0.28 * (1 - lift / 0.8) * game.kicker.opacity),
+      );
+    }
+  }
+
+  /// Fotbalista: kosti jako tlusté čáry s perspektivní tloušťkou, trup jako
+  /// polygon; vše (i [extra] = míč) seřazené odzadu dopředu.
+  void _kicker(Canvas canvas, Camera cam, List<(double, void Function())> extra) {
+    final k = game.kicker;
+    final pose = k.pose();
+    final items = <(double, void Function())>[...extra];
+    // průhlednost po částech (překryvy končetin prosvítají — u ducha nevadí)
+    Color fade(Color base) => base.withValues(alpha: base.a * k.opacity);
+
+    void limb(Joint a, Joint b, double width, Color color, {Color? top, double split = 0}) {
+      final pa = pose[a]!, pb = pose[b]!;
+      if (cam.isBehind(pa) || cam.isBehind(pb)) return;
+      items.add((cam.depth((pa + pb) * 0.5), () {
+        final paint = Paint()
+          ..strokeCap = StrokeCap.round
+          ..strokeWidth = math.max(2.0, cam.scaleAt((pa + pb) * 0.5, width));
+        if (top != null && split > 0) {
+          final m = pa.lerp(pb, split);
+          canvas.drawLine(cam.project(pa), cam.project(m), paint..color = fade(top));
+          canvas.drawLine(cam.project(m), cam.project(pb), paint..color = fade(color));
+        } else {
+          canvas.drawLine(cam.project(pa), cam.project(pb), paint..color = fade(color));
+        }
+      }));
+    }
+
+    // nohy: stehno (trenýrky → kůže), holeň (štulpna), bota
+    for (final (hip, knee, ankle, toe) in [
+      (Joint.hipL, Joint.kneeL, Joint.ankleL, Joint.toeL),
+      (Joint.hipR, Joint.kneeR, Joint.ankleR, Joint.toeR),
+    ]) {
+      limb(hip, knee, 0.15, _skin, top: _shorts, split: 0.55);
+      limb(knee, ankle, 0.11, _sock, top: _skin, split: 0.2);
+      limb(ankle, toe, 0.095, _boot);
+    }
+    // ruce: rukáv → kůže
+    for (final (sh, el, ha) in [
+      (Joint.shoulderL, Joint.elbowL, Joint.handL),
+      (Joint.shoulderR, Joint.elbowR, Joint.handR),
+    ]) {
+      limb(sh, el, 0.095, _skin, top: _jersey, split: 0.5);
+      limb(el, ha, 0.08, _skin);
+    }
+
+    // trup: dres (ramena → boky), trenýrky (boky)
+    final shL = pose[Joint.shoulderL]!, shR = pose[Joint.shoulderR]!;
+    final hipL = pose[Joint.hipL]!, hipR = pose[Joint.hipR]!;
+    final waistL = hipL.lerp(shL, 0.12) + const Vec3(-0.04, 0, 0);
+    final waistR = hipR.lerp(shR, 0.12) + const Vec3(0.04, 0, 0);
+    items.add((cam.depth(pose[Joint.pelvis]!.lerp(pose[Joint.neck]!, 0.5)), () {
+      final torso = Path()
+        ..addPolygon([
+          for (final p in [shL - const Vec3(0.03, 0, 0), shR + const Vec3(0.03, 0, 0), waistR, waistL])
+            cam.project(p)
+        ], true);
+      canvas.drawPath(torso, Paint()..color = fade(_jersey));
+      // číslo na zádech — čitelná orientace hráče
+      final back = pose[Joint.pelvis]!.lerp(pose[Joint.neck]!, 0.6) + const Vec3(0, 0, 0.05);
+      final h = cam.scaleAt(back, 0.18);
+      final tp = TextPainter(
+        text: TextSpan(
+            text: '10',
+            style: TextStyle(color: fade(_shorts), fontSize: h, fontWeight: FontWeight.w900)),
+        textDirection: TextDirection.ltr,
+      )..layout();
+      tp.paint(canvas, cam.project(back) - Offset(tp.width / 2, tp.height / 2));
+      final shorts = Path()
+        ..addPolygon([
+          for (final p in [
+            waistL, waistR,
+            hipR + const Vec3(0.05, -0.12, 0), hipL + const Vec3(-0.05, -0.12, 0),
+          ])
+            cam.project(p)
+        ], true);
+      canvas.drawPath(shorts, Paint()..color = fade(_shorts));
+      // límec
+      canvas.drawLine(cam.project(shL), cam.project(shR),
+          Paint()
+            ..color = fade(_jerseyDark)
+            ..strokeWidth = math.max(1.0, cam.scaleAt(pose[Joint.neck]!, 0.03)));
+    }));
+
+    // hlava (zezadu = vlasy) + krk
+    final head = pose[Joint.head]!;
+    limb(Joint.neck, Joint.head, 0.09, _skin);
+    items.add((cam.depth(head) - 0.01, () {
+      final c = cam.project(head);
+      final r = cam.scaleAt(head, T.kickerHeadRadius);
+      canvas.drawCircle(c, r, Paint()..color = fade(_skin));
+      canvas.drawCircle(c - Offset(0, r * 0.12), r * 0.97, Paint()..color = fade(_hair));
+    }));
+
+    // stopa švihu (nápřah → kontakt)
+    final sw = k.swoosh;
+    if (sw != null) {
+      items.add((cam.depth(sw.to) - 0.05, () {
+        final mid = sw.from.lerp(sw.to, 0.5) + const Vec3(0, -0.12, 0);
+        final a = cam.project(sw.from), m = cam.project(mid), b = cam.project(sw.to);
+        final path = Path()
+          ..moveTo(a.dx, a.dy)
+          ..quadraticBezierTo(m.dx * 2 - (a.dx + b.dx) / 2, m.dy * 2 - (a.dy + b.dy) / 2, b.dx, b.dy);
+        canvas.drawPath(
+          path,
+          Paint()
+            ..color = Color.fromRGBO(255, 255, 255, 0.55 * (1 - sw.age))
+            ..style = PaintingStyle.stroke
+            ..strokeCap = StrokeCap.round
+            ..strokeWidth = math.max(2.0, cam.scaleAt(sw.to, 0.12)),
+        );
+      }));
+    }
+
+    items.sort((a, b) => b.$1.compareTo(a.$1)); // daleko → blízko
+    for (final (_, draw) in items) {
+      draw();
     }
   }
 

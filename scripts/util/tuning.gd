@@ -54,12 +54,39 @@ const SWIPE_SAMPLE_MIN_PX := 2.0     # posun prstu menší než tohle se nevzork
 const SWIPE_MAX_POINTS := 256        # strop vzorků dráhy (dlouhý drag v slow-mo)
 const SWIPE_POWER_FULL_INS := 12.0   # rychlost prstu v palcích/s = plná síla (DPI normalizace)
 const OVERLAY_BALL_SCREEN_FRAC := 0.35  # průměr overlay míče vůči šířce obrazovky
+const OVERLAY_BOTTOM_MARGIN_PX := 40.0  # mezera overlay míče od spodní hrany
 const ASSIST_DEFAULT := true         # slow-mo od touch-down (klávesa A přepíná)
 const ASSIST_SLOWMO := 0.6
 
 # ── Prezentace (§5) ───────────────────────────────────────────
 const FREEZE_TIME := 0.15            # s reálného času; freeze-frame kontaktu
 const HUD_FADE_DELAY := 2.5          # s; jak dlouho drží kick overlay
+const HUD_FADE_TIME := 0.5           # s; doba vyblednutí kick overlaye
+const RESULT_PAUSE := 1.4            # s herního času mezi výsledkem a dalším serve
+const TRAIL_MAX_POINTS := 600        # strop bodů debug stopy
+
+# ── Fotbalista (vizuál, kicker.gd) ────────────────────────────
+# Jen prezentace — kontakt dál nastává okamžitě při puštění swipu.
+const KICKER_THIGH := 0.46          # m; stehno
+const KICKER_SHIN := 0.44           # m; holeň (kotník)
+const KICKER_FOOT_LEN := 0.24       # m; kotník → špička
+const KICKER_HIP_HEIGHT := 0.93     # m; pánev v postoji
+const KICKER_HIP_HALF_WIDTH := 0.1
+const KICKER_TORSO := 0.5           # pánev → hrudník (ramena)
+const KICKER_SHOULDER_HALF_WIDTH := 0.2
+const KICKER_UPPER_ARM := 0.3
+const KICKER_FOREARM := 0.28
+const KICKER_HEAD_RADIUS := 0.11
+const KICKER_STAND_BACK := 0.5      # pánev za ideálním bodem kontaktu (z)
+const KICKER_STAND_SIDE := 0.22     # pánev stranou od míče (na stranu stojné nohy)
+const KICKER_PLANT_SIDE := 0.3      # stojná noha vedle míče při nápřahu
+const KICKER_FOLLOW_RATE := 5.0     # /s; jak rychle dojde do postoje
+const KICKER_WINDUP_TIME := 0.22    # s herního času do plného nápřahu
+const KICKER_FOLLOW_TIME := 0.35    # s dokopnutí po kontaktu
+const KICKER_RECOVER_TIME := 0.6    # s návratu do postoje
+const KICKER_SWOOSH_TIME := 0.3     # s; stopa švihu nohy
+const KICKER_GHOST_ALPHA := 0.35    # průhlednost, dokud míč přilétá (nezakrýt ho)
+const KICKER_FADE_RATE := 10.0      # /s; přechod průhlednosti
 
 # ── Hřiště / brána ────────────────────────────────────────────
 # Bránu staví goal.gd z těchhle hodnot (tyče, břevno, umístění) — scéna
@@ -68,6 +95,7 @@ const GOAL_DISTANCE := 18.0          # m od hráče (origin)
 const GOAL_HALF_WIDTH := 3.66        # vnitřní polovina šířky brány
 const GOAL_HEIGHT := 2.44            # spodní hrana břevna
 const POST_RADIUS := 0.06            # tyče i břevno
+const FLIGHT_END_BEYOND_GOAL := 10.0  # m za bránou → let končí, není co ukázat
 
 # ── Serve / debug (Fáze 0) ────────────────────────────────────
 const SERVE_SEED := 12345            # -1 = náhodný seed (hra); pevný = replaye
