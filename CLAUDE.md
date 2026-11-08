@@ -16,7 +16,7 @@ vylepšení: **ROADMAP.md** (začít sekcí V0/T0).
 ## Commands
 
 ```bash
-GODOT="/Volumes/YOTTA/Applications/Godot_mono.app/Contents/MacOS/Godot"
+GODOT="${GODOT:-godot}"   # cesta k Godot 4.7 mono binárce z lokálního prostředí
 
 # otevřít v editoru
 "$GODOT" --editor --path .
@@ -63,7 +63,8 @@ mode. Gradle build bude potřeba až pro AAB do Play Store (Fáze 3).
 
 iOS preset generuje **Xcode projekt** (`export_project_only=true`), ne rovnou
 .ipa — podpis a nahrání na zařízení řeší Xcode, stejný workflow jako
-u Flutter projektů. Bundle id `com.ol1n.fotballsimulator`, tým P82HWPG7FN,
+u Flutter projektů. Bundle id `com.ol1n.fotballsimulator`, tým = Apple Team ID
+(v repu prázdné, doplnit lokálně v editoru a necommitovat),
 min iOS 14, portrait, launch storyboard. Build ověřen přes `xcodebuild`
 (BUILD SUCCEEDED, podepsáno Apple Development).
 
@@ -99,11 +100,11 @@ flutter run --release              # Android (bez key.properties podepíše debu
 flutter build apk --release        # build/app/outputs/flutter-apk/app-release.apk
 ```
 
-Bundle/applicationId `com.ol1n.fotballSimulator` (iOS i Android), tým P82HWPG7FN.
+Bundle/applicationId `com.ol1n.fotballSimulator` (iOS i Android), Team ID v CI ze secretu `IOS_TEAM_ID`.
 
 ### Release CI (`.github/workflows/`)
 
-Workflowy jsou z golden šablon `/Volumes/YOTTA/Dev/Distribution/workflows/`
+Workflowy jsou z golden šablon repa Distribution (`workflows/`)
 nasazené skriptem `align-project.sh` (`--app-dir flutter_app --app-name
 FotballSimulator`). Needitovat ručně — opravy patří do Distribution a pak
 re-align.
