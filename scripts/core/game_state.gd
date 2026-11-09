@@ -54,7 +54,7 @@ func _physics_process(delta: float) -> void:
 		State.KICK_WINDOW, State.SERVE:
 			# druhý dopad = šance pryč (volej se kope před ním)
 			if ball.bounce_count >= 2:
-				_finish_serve("POZDĚ" if not _swung else "MIMO",
+				_finish_serve("RESULT_LATE" if not _swung else "RESULT_MISS",
 						Color(1.0, 0.6, 0.2))
 		State.FLIGHT:
 			if not _result_reported:
@@ -192,18 +192,18 @@ func _check_goal_crossing() -> void:
 		var cross_y := lerpf(ball.position.y - ball.vel.y * dt, ball.position.y, t)
 		_result_reported = true
 		if absf(cross_x) < Tuning.GOAL_HALF_WIDTH and cross_y < Tuning.GOAL_HEIGHT:
-			hud.show_result("GÓL!", Color(0.3, 1.0, 0.4))
+			hud.show_result("RESULT_GOAL", Color(0.3, 1.0, 0.4))
 			print("GÓL!  (%.2f, %.2f) · %.0f km/h" % [cross_x, cross_y, ball.vel.length() * 3.6])
 		else:
-			hud.show_result("MIMO", Color(1.0, 0.35, 0.3))
+			hud.show_result("RESULT_MISS", Color(1.0, 0.35, 0.3))
 			print("MIMO  (%.2f, %.2f)" % [cross_x, cross_y])
 
 func _on_ball_stopped() -> void:
 	if state == State.FLIGHT and not _result_reported:
-		hud.show_result("NEDOLETĚL", Color(1.0, 0.6, 0.2))
+		hud.show_result("RESULT_SHORT", Color(1.0, 0.6, 0.2))
 	_finish_serve("", Color.WHITE)
 
-## Uzavře rozehrávku (s volitelnou hláškou) a po pauze rozehraje další míč.
+## Uzavře rozehrávku (s volitelnou hláškou = klíč překladu) a po pauze rozehraje další míč.
 func _finish_serve(msg: String, color: Color) -> void:
 	if state == State.RESULT:
 		return

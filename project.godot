@@ -25,6 +25,10 @@ window/handheld/orientation=1
 
 pointing/emulate_touch_from_mouse=true
 
+[internationalization]
+
+locale/translations=PackedStringArray("res://l10n/strings.cs.translation", "res://l10n/strings.en.translation", "res://l10n/strings.ar.translation", "res://l10n/strings.bn.translation", "res://l10n/strings.ca.translation", "res://l10n/strings.da.translation", "res://l10n/strings.de.translation", "res://l10n/strings.el.translation", "res://l10n/strings.es.translation", "res://l10n/strings.fi.translation", "res://l10n/strings.fr.translation", "res://l10n/strings.gu.translation", "res://l10n/strings.he.translation", "res://l10n/strings.hi.translation", "res://l10n/strings.hr.translation", "res://l10n/strings.hu.translation", "res://l10n/strings.id.translation", "res://l10n/strings.it.translation", "res://l10n/strings.ja.translation", "res://l10n/strings.kn.translation", "res://l10n/strings.ko.translation", "res://l10n/strings.ml.translation", "res://l10n/strings.mr.translation", "res://l10n/strings.ms.translation", "res://l10n/strings.nb.translation", "res://l10n/strings.nl.translation", "res://l10n/strings.or.translation", "res://l10n/strings.pa.translation", "res://l10n/strings.pl.translation", "res://l10n/strings.pt_BR.translation", "res://l10n/strings.pt_PT.translation", "res://l10n/strings.ro.translation", "res://l10n/strings.ru.translation", "res://l10n/strings.sk.translation", "res://l10n/strings.sl.translation", "res://l10n/strings.sv.translation", "res://l10n/strings.ta.translation", "res://l10n/strings.te.translation", "res://l10n/strings.th.translation", "res://l10n/strings.tr.translation", "res://l10n/strings.uk.translation", "res://l10n/strings.ur.translation", "res://l10n/strings.vi.translation", "res://l10n/strings.zh_Hans.translation", "res://l10n/strings.zh_Hant.translation")
+
 [physics]
 
 common/physics_ticks_per_second=120

@@ -13,6 +13,8 @@ const T := preload("res://scripts/util/tuning.gd")
 var _failures := 0
 
 func _initialize() -> void:
+	# HUD texty jdou přes překlady — test běží v češtině nezávisle na OS
+	TranslationServer.set_locale("cs")
 	_run.call_deferred()
 
 func _run() -> void:
