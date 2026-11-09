@@ -1,0 +1,15 @@
+{
+  "@@locale": "he",
+  "resultGoal": "גול!",
+  "resultMiss": "החטאה",
+  "resultLate": "מאוחר מדי",
+  "resultShort": "לא הגיע",
+  "kickAir": "בעיטה באוויר! ({ms} ms)",
+  "kickStats": "{speed} קמ״ש · {spin} סיבובים/ש׳ · {rating} ({ms} ms)",
+  "ratingPerfect": "מושלם",
+  "ratingGood": "טוב",
+  "ratingEarly": "מוקדם",
+  "ratingLate": "מאוחר",
+  "slowMoOn": "הילוך איטי: פועל",
+  "slowMoOff": "הילוך איטי: כבוי"
+}

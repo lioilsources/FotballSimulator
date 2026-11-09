@@ -1,0 +1,15 @@
+{
+  "@@locale": "zh_Hant",
+  "resultGoal": "進球！",
+  "resultMiss": "射偏了",
+  "resultLate": "太晚了",
+  "resultShort": "力道不足",
+  "kickAir": "踢空了！（{ms} 毫秒）",
+  "kickStats": "{speed} km/h · {spin} 轉/秒 · {rating}（{ms} 毫秒）",
+  "ratingPerfect": "完美",
+  "ratingGood": "不錯",
+  "ratingEarly": "太早",
+  "ratingLate": "太晚",
+  "slowMoOn": "慢動作：開",
+  "slowMoOff": "慢動作：關"
+}

@@ -1,0 +1,15 @@
+{
+  "@@locale": "id",
+  "resultGoal": "GOL!",
+  "resultMiss": "MELESET",
+  "resultLate": "TERLAMBAT",
+  "resultShort": "KURANG JAUH",
+  "kickAir": "TENDANG ANGIN! ({ms} ms)",
+  "kickStats": "{speed} km/j · {spin} put/dtk · {rating} ({ms} ms)",
+  "ratingPerfect": "SEMPURNA",
+  "ratingGood": "BAGUS",
+  "ratingEarly": "TERLALU CEPAT",
+  "ratingLate": "TERLAMBAT",
+  "slowMoOn": "GERAK LAMBAT AKTIF",
+  "slowMoOff": "GERAK LAMBAT NONAKTIF"
+}

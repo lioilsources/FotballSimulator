@@ -1,0 +1,15 @@
+{
+  "@@locale": "ms",
+  "resultGoal": "GOL!",
+  "resultMiss": "TERSASAR",
+  "resultLate": "TERLAMBAT",
+  "resultShort": "TIDAK SAMPAI",
+  "kickAir": "SEPAK ANGIN! ({ms} ms)",
+  "kickStats": "{speed} km/j · {spin} psn/s · {rating} ({ms} ms)",
+  "ratingPerfect": "SEMPURNA",
+  "ratingGood": "BAGUS",
+  "ratingEarly": "AWAL",
+  "ratingLate": "LEWAT",
+  "slowMoOn": "GERAK PERLAHAN: HIDUP",
+  "slowMoOff": "GERAK PERLAHAN: MATI"
+}

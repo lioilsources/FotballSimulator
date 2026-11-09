@@ -1,6 +1,7 @@
 // Port tests/gameplay_test.gd — end-to-end serve → kop v ideálním okamžiku
 // → freeze-frame → gól, přes stejné API jako swipe (Game.onKickReleased).
 import 'package:flutter_test/flutter_test.dart';
+import 'package:fotball_simulator/core/contact_model.dart';
 import 'package:fotball_simulator/core/game.dart';
 import 'package:fotball_simulator/core/tuning.dart';
 import 'package:fotball_simulator/core/vec3.dart';
@@ -34,8 +35,8 @@ void main() {
       }
       expect(game.freeze, isNull);
       expect(game.state, GameState.result);
-      expect(game.resultText, 'GÓL!');
-      expect(game.kickText, contains('PERFECT'));
+      expect(game.result, ShotResult.goal);
+      expect(game.kick?.rating, Rating.perfect);
     });
   }
 
@@ -45,7 +46,7 @@ void main() {
     while (game.state != GameState.result && guard++ < 1200) {
       game.update(1 / 60);
     }
-    expect(game.resultText, 'POZDĚ');
+    expect(game.result, ShotResult.late);
     guard = 0;
     while (game.state == GameState.result && guard++ < 600) {
       game.update(1 / 60);

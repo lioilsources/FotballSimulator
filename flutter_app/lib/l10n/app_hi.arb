@@ -1,0 +1,15 @@
+{
+  "@@locale": "hi",
+  "resultGoal": "गोल!",
+  "resultMiss": "चूक गए",
+  "resultLate": "बहुत देर",
+  "resultShort": "कम पड़ी",
+  "kickAir": "हवा में किक! ({ms} ms)",
+  "kickStats": "{speed} km/h · {spin} चक्कर/से · {rating} ({ms} ms)",
+  "ratingPerfect": "परफ़ेक्ट",
+  "ratingGood": "अच्छा",
+  "ratingEarly": "जल्दी",
+  "ratingLate": "देर से",
+  "slowMoOn": "स्लो-मो चालू",
+  "slowMoOff": "स्लो-मो बंद"
+}

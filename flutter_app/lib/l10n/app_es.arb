@@ -1,0 +1,15 @@
+{
+  "@@locale": "es",
+  "resultGoal": "¡GOL!",
+  "resultMiss": "FUERA",
+  "resultLate": "DEMASIADO TARDE",
+  "resultShort": "SE QUEDÓ CORTO",
+  "kickAir": "¡AL AIRE! ({ms} ms)",
+  "kickStats": "{speed} km/h · {spin} rev/s · {rating} ({ms} ms)",
+  "ratingPerfect": "PERFECTO",
+  "ratingGood": "BIEN",
+  "ratingEarly": "PRONTO",
+  "ratingLate": "TARDE",
+  "slowMoOn": "CÁMARA LENTA: SÍ",
+  "slowMoOff": "CÁMARA LENTA: NO"
+}

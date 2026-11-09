@@ -1,0 +1,15 @@
+{
+  "@@locale": "ja",
+  "resultGoal": "ゴール！",
+  "resultMiss": "ミス",
+  "resultLate": "遅すぎ",
+  "resultShort": "届かず",
+  "kickAir": "空振り！（{ms} ms）",
+  "kickStats": "{speed} km/h · {spin} 回転/秒 · {rating}（{ms} ms）",
+  "ratingPerfect": "パーフェクト",
+  "ratingGood": "グッド",
+  "ratingEarly": "早い",
+  "ratingLate": "遅い",
+  "slowMoOn": "スロー ON",
+  "slowMoOff": "スロー OFF"
+}

@@ -1,0 +1,15 @@
+{
+  "@@locale": "uk",
+  "resultGoal": "ГОЛ!",
+  "resultMiss": "ПОВЗ",
+  "resultLate": "ЗАПІЗНО",
+  "resultShort": "НЕДОЛІТ",
+  "kickAir": "ПОВЗ М'ЯЧ! ({ms} мс)",
+  "kickStats": "{speed} км/год · {spin} об/с · {rating} ({ms} мс)",
+  "ratingPerfect": "ІДЕАЛЬНО",
+  "ratingGood": "ДОБРЕ",
+  "ratingEarly": "РАНО",
+  "ratingLate": "ПІЗНО",
+  "slowMoOn": "УПОВІЛЬНЕННЯ УВІМК.",
+  "slowMoOff": "УПОВІЛЬНЕННЯ ВИМК."
+}

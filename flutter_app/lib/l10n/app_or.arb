@@ -1,0 +1,15 @@
+{
+  "@@locale": "or",
+  "resultGoal": "ଗୋଲ୍!",
+  "resultMiss": "ଚୁକିଗଲା",
+  "resultLate": "ବହୁତ ଡେରି",
+  "resultShort": "ପହଞ୍ଚିଲା ନାହିଁ",
+  "kickAir": "ପବନରେ କିକ୍! ({ms} ms)",
+  "kickStats": "{speed} km/h · {spin} ଘୂର୍ଣ୍ଣନ/ସେ · {rating} ({ms} ms)",
+  "ratingPerfect": "ପରଫେକ୍ଟ",
+  "ratingGood": "ଭଲ",
+  "ratingEarly": "ଶୀଘ୍ର",
+  "ratingLate": "ଡେରି",
+  "slowMoOn": "ସ୍ଲୋ-ମୋ ଚାଲୁ",
+  "slowMoOff": "ସ୍ଲୋ-ମୋ ବନ୍ଦ"
+}

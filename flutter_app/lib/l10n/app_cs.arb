@@ -1,0 +1,75 @@
+{
+  "@@locale": "cs",
+  "resultGoal": "GÓL!",
+  "@resultGoal": {
+    "description": "Big result banner: the ball went into the goal."
+  },
+  "resultMiss": "MIMO",
+  "@resultMiss": {
+    "description": "Big result banner: the shot missed the goal."
+  },
+  "resultLate": "POZDĚ",
+  "@resultLate": {
+    "description": "Big result banner: the player did not kick before the second bounce."
+  },
+  "resultShort": "NEDOLETĚL",
+  "@resultShort": {
+    "description": "Big result banner: the ball stopped before reaching the goal."
+  },
+  "kickAir": "VZDUCH! ({ms} ms)",
+  "@kickAir": {
+    "description": "Kick line when the swipe completely missed the ball. {ms} is the signed timing error, e.g. +35.",
+    "placeholders": {
+      "ms": {
+        "type": "String",
+        "example": "+35"
+      }
+    }
+  },
+  "kickStats": "{speed} km/h · {spin} ot/s · {rating} ({ms} ms)",
+  "@kickStats": {
+    "description": "Kick line after contact: ball speed, spin (revolutions per second), timing rating and signed timing error.",
+    "placeholders": {
+      "speed": {
+        "type": "int",
+        "example": "92"
+      },
+      "spin": {
+        "type": "String",
+        "example": "8.4"
+      },
+      "rating": {
+        "type": "String",
+        "example": "PERFECT"
+      },
+      "ms": {
+        "type": "String",
+        "example": "+12"
+      }
+    }
+  },
+  "ratingPerfect": "PERFEKTNÍ",
+  "@ratingPerfect": {
+    "description": "Timing rating shown in the kick line."
+  },
+  "ratingGood": "DOBRÝ",
+  "@ratingGood": {
+    "description": "Timing rating shown in the kick line."
+  },
+  "ratingEarly": "BRZY",
+  "@ratingEarly": {
+    "description": "Timing rating: kicked too early."
+  },
+  "ratingLate": "POZDĚ",
+  "@ratingLate": {
+    "description": "Timing rating: kicked too late."
+  },
+  "slowMoOn": "ZPOMALENÍ ZAP",
+  "@slowMoOn": {
+    "description": "Small toggle button, slow-motion assist enabled."
+  },
+  "slowMoOff": "ZPOMALENÍ VYP",
+  "@slowMoOff": {
+    "description": "Small toggle button, slow-motion assist disabled."
+  }
+}

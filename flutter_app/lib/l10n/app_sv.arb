@@ -1,0 +1,15 @@
+{
+  "@@locale": "sv",
+  "resultGoal": "MÅL!",
+  "resultMiss": "MISS",
+  "resultLate": "FÖR SENT",
+  "resultShort": "FÖR KORT",
+  "kickAir": "LUFTSPARK! ({ms} ms)",
+  "kickStats": "{speed} km/h · {spin} varv/s · {rating} ({ms} ms)",
+  "ratingPerfect": "PERFEKT",
+  "ratingGood": "BRA",
+  "ratingEarly": "FÖR TIDIGT",
+  "ratingLate": "FÖR SENT",
+  "slowMoOn": "SLOWMOTION PÅ",
+  "slowMoOff": "SLOWMOTION AV"
+}

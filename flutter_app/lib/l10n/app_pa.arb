@@ -1,0 +1,15 @@
+{
+  "@@locale": "pa",
+  "resultGoal": "ਗੋਲ!",
+  "resultMiss": "ਖੁੰਝ ਗਿਆ",
+  "resultLate": "ਬਹੁਤ ਦੇਰ",
+  "resultShort": "ਪਹੁੰਚੀ ਨਹੀਂ",
+  "kickAir": "ਹਵਾ ਵਿੱਚ ਕਿੱਕ! ({ms} ms)",
+  "kickStats": "{speed} km/h · {spin} ਚੱਕਰ/ਸ · {rating} ({ms} ms)",
+  "ratingPerfect": "ਪਰਫ਼ੈਕਟ",
+  "ratingGood": "ਵਧੀਆ",
+  "ratingEarly": "ਜਲਦੀ",
+  "ratingLate": "ਦੇਰ ਨਾਲ",
+  "slowMoOn": "ਸਲੋ-ਮੋ ਚਾਲੂ",
+  "slowMoOff": "ਸਲੋ-ਮੋ ਬੰਦ"
+}

@@ -1,0 +1,15 @@
+{
+  "@@locale": "ar",
+  "resultGoal": "هدف!",
+  "resultMiss": "خارج المرمى",
+  "resultLate": "متأخر جدًا",
+  "resultShort": "لم تصل",
+  "kickAir": "ركلة في الهواء! ({ms} ms)",
+  "kickStats": "{speed} كم/س · {spin} دورة/ث · {rating} ({ms} ms)",
+  "ratingPerfect": "مثالي",
+  "ratingGood": "جيد",
+  "ratingEarly": "مبكر",
+  "ratingLate": "متأخر",
+  "slowMoOn": "الحركة البطيئة: تشغيل",
+  "slowMoOff": "الحركة البطيئة: إيقاف"
+}

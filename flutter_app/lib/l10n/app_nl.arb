@@ -1,0 +1,15 @@
+{
+  "@@locale": "nl",
+  "resultGoal": "GOAL!",
+  "resultMiss": "MIS",
+  "resultLate": "TE LAAT",
+  "resultShort": "TE KORT",
+  "kickAir": "MISTRAP! ({ms} ms)",
+  "kickStats": "{speed} km/u · {spin} omw./s · {rating} ({ms} ms)",
+  "ratingPerfect": "PERFECT",
+  "ratingGood": "GOED",
+  "ratingEarly": "TE VROEG",
+  "ratingLate": "TE LAAT",
+  "slowMoOn": "SLOW-MO AAN",
+  "slowMoOff": "SLOW-MO UIT"
+}

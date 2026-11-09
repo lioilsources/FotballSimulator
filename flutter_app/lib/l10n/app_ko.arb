@@ -1,0 +1,15 @@
+{
+  "@@locale": "ko",
+  "resultGoal": "골!",
+  "resultMiss": "빗나감",
+  "resultLate": "너무 늦음",
+  "resultShort": "거리 부족",
+  "kickAir": "헛발질! ({ms} ms)",
+  "kickStats": "{speed} km/h · {spin} 회전/초 · {rating} ({ms} ms)",
+  "ratingPerfect": "퍼펙트",
+  "ratingGood": "굿",
+  "ratingEarly": "빠름",
+  "ratingLate": "늦음",
+  "slowMoOn": "슬로모션 켬",
+  "slowMoOff": "슬로모션 끔"
+}

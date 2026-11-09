@@ -1,0 +1,15 @@
+{
+  "@@locale": "de",
+  "resultGoal": "TOR!",
+  "resultMiss": "DANEBEN",
+  "resultLate": "ZU SPÄT",
+  "resultShort": "ZU KURZ",
+  "kickAir": "LUFTLOCH! ({ms} ms)",
+  "kickStats": "{speed} km/h · {spin} U/s · {rating} ({ms} ms)",
+  "ratingPerfect": "PERFEKT",
+  "ratingGood": "GUT",
+  "ratingEarly": "ZU FRÜH",
+  "ratingLate": "ZU SPÄT",
+  "slowMoOn": "ZEITLUPE AN",
+  "slowMoOff": "ZEITLUPE AUS"
+}
