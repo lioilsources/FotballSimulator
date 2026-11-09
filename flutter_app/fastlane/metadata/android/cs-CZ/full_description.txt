@@ -1,0 +1,10 @@
+Fotball Simulator je o jediném okamžiku: nárt potká míč.
+
+Míč přiletí, odskočí a vy ho jedním švihem prstu trefíte z voleje. Místo, kde se prstem dotknete míče, určuje bod kontaktu, oblouk švihu přidá rotaci, rychlost určí sílu a okamžik puštění je váš timing.
+
+• Skutečná fyzika míče: odpor vzduchu, Magnusův jev, rotace a odskoky
+• Faleš bočním spinem, padající střela topspinem
+• Hodnocení timingu na milisekundy
+• Freeze-frame ukáže, kde přesně jste míč trefili
+• Zpomalení jako pomoc při učení timingu
+• Offline, bez účtu, bez reklam

@@ -1,0 +1,1 @@
+piłka,futbol,wolej,strzał,gol,fizyka,przesunięcie,podkręcenie,rotacja,sport,napastnik

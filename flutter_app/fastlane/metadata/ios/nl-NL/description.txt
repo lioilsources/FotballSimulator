@@ -1,0 +1,10 @@
+Fotball Simulator draait om één moment: je wreef raakt de bal.
+
+De bal komt op je af en stuit. Neem hem op de volley met één swipe: waar je vinger de bal raakt bepaalt het raakpunt, de boog van de swipe geeft effect, de snelheid bepaalt de kracht en het moment van loslaten is je timing.
+
+• Echte balfysica: luchtweerstand, Magnus-effect, spin en stuiters
+• Krul met zijspin, dip met topspin
+• Timingbeoordeling tot op de milliseconde
+• Stilstaand beeld toont precies waar je de bal raakte
+• Slow-motion als hulp bij het leren van de timing
+• Offline, geen account, geen advertenties

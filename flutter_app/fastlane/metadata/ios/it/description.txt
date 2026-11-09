@@ -1,0 +1,10 @@
+Fotball Simulator è tutto in un istante: il collo del piede incontra il pallone.
+
+Il pallone arriva verso di te e rimbalza. Colpiscilo al volo con un solo swipe: dove il dito tocca il pallone decide il punto di contatto, la curva del gesto aggiunge effetto, la velocità decide la potenza e il momento in cui lasci è il tuo tempismo.
+
+• Fisica reale del pallone: resistenza, effetto Magnus, rotazione e rimbalzi
+• Tiro a giro con effetto laterale, a scendere con il topspin
+• Valutazione del tempismo al millisecondo
+• Il fermo immagine mostra dove hai colpito il pallone
+• Rallenty d'aiuto per imparare il tempismo
+• Offline, senza account, senza pubblicità

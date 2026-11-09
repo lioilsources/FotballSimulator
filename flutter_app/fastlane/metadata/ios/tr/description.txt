@@ -1,0 +1,10 @@
+Fotball Simulator tek bir anla ilgili: ayağının üstü topla buluşur.
+
+Top sana doğru gelir ve seker. Tek bir kaydırmayla vole vur: parmağının topa değdiği yer temas noktasını belirler, kaydırmanın kavisi falso verir, hızı gücü belirler ve bıraktığın an zamanlamandır.
+
+• Gerçek top fiziği: hava direnci, Magnus etkisi, dönüş ve sekmeler
+• Yan falsoyla kavis, üst falsoyla düşen şut
+• Milisaniyeye kadar zamanlama puanı
+• Donmuş kare topa tam olarak nereden vurduğunu gösterir
+• Zamanlamayı öğrenmek için ağır çekim yardımı
+• Çevrimdışı, hesap yok, reklam yok

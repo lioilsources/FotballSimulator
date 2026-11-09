@@ -1,0 +1,10 @@
+Fotball Simulator ține de o singură clipă: șiretul întâlnește mingea.
+
+Mingea vine spre tine și sare. Lovește-o din voleu cu o singură glisare: locul în care degetul atinge mingea stabilește punctul de contact, curba gestului dă efect, viteza dă forța, iar momentul în care eliberezi este sincronizarea ta.
+
+• Fizică reală a mingii: rezistența aerului, efect Magnus, rotație și sărituri
+• Efect lateral pentru curbă, topspin pentru cădere
+• Evaluarea sincronizării la milisecundă
+• Imaginea înghețată arată unde ai lovit mingea
+• Încetinire ca ajutor pentru a învăța sincronizarea
+• Offline, fără cont, fără reclame

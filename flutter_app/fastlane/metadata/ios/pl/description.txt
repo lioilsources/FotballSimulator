@@ -1,0 +1,10 @@
+Fotball Simulator to jeden moment: podbicie spotyka piłkę.
+
+Piłka leci w twoją stronę i odbija się. Uderz ją z woleja jednym ruchem palca: miejsce, w którym dotkniesz piłki, wyznacza punkt kontaktu, łuk gestu nadaje rotację, prędkość decyduje o sile, a chwila puszczenia to twój timing.
+
+• Prawdziwa fizyka piłki: opór powietrza, efekt Magnusa, rotacja i odbicia
+• Podkręcenie rotacją boczną, opad rotacją górną
+• Ocena timingu co do milisekundy
+• Stopklatka pokazuje, gdzie dokładnie trafiłeś piłkę
+• Spowolnienie pomaga nauczyć się timingu
+• Offline, bez konta, bez reklam

@@ -1,0 +1,10 @@
+Bei Fotball Simulator dreht sich alles um einen Moment: Spann trifft Ball.
+
+Der Ball fliegt auf dich zu und springt auf. Nimm ihn mit einem einzigen Swipe volley: Wo dein Finger den Ball berührt, liegt der Treffpunkt, der Bogen des Swipes gibt Spin, das Tempo bestimmt die Kraft und der Moment des Loslassens ist dein Timing.
+
+• Echte Ballphysik: Luftwiderstand, Magnus-Effekt, Spin und Aufsprünge
+• Anschneiden mit Seitenspin, Abtauchen mit Topspin
+• Timing-Bewertung auf die Millisekunde
+• Standbild zeigt genau, wo du den Ball getroffen hast
+• Zeitlupe als Hilfe beim Lernen des Timings
+• Offline, ohne Konto, ohne Werbung

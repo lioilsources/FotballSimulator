@@ -1,0 +1,10 @@
+Fotball Simulator handlar om ett ögonblick: vristen möter bollen.
+
+Bollen kommer mot dig och studsar. Ta den på volley med ett enda svep: där fingret nuddar bollen avgör träffpunkten, svepets båge ger skruv, farten ger kraften och ögonblicket du släpper är din timing.
+
+• Äkta bollfysik: luftmotstånd, Magnuseffekt, spinn och studsar
+• Skruva med sidospinn, dippa med toppspinn
+• Timingbetyg ned på millisekunden
+• Stillbild visar exakt var du träffade bollen
+• Slowmotion som hjälp för att lära dig timingen
+• Offline, inget konto, ingen reklam

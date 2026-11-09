@@ -1,0 +1,10 @@
+Fotball Simulator va d'un sol instant: l'empenya troba la pilota.
+
+La pilota ve cap a tu i bota. Colpeja-la de volea amb un sol lliscament: on el dit toca la pilota fixa el punt de contacte, la corba del gest hi afegeix efecte, la velocitat marca la potència i el moment en què deixes anar és el teu timing.
+
+• Física real de la pilota: fregament, efecte Magnus, gir i bots
+• Rosca amb efecte lateral, caiguda amb efecte liftat
+• Valoració del timing al mil·lisegon
+• La imatge congelada mostra on has colpejat la pilota
+• Càmera lenta d'ajuda per aprendre el timing
+• Sense connexió, sense compte, sense anuncis

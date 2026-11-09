@@ -1,0 +1,10 @@
+Fotball Simulator handler om ét øjeblik: vristen møder bolden.
+
+Bolden kommer mod dig og springer op. Tag den på volley med ét swipe: hvor din finger rører bolden, bestemmer træfpunktet, swipets bue giver skru, farten giver kraften, og øjeblikket du slipper, er din timing.
+
+• Ægte boldfysik: luftmodstand, Magnus-effekt, spin og opspring
+• Skru med sidespin, dyk med topspin
+• Timing-vurdering ned til millisekundet
+• Stillbillede viser præcis, hvor du ramte bolden
+• Slowmotion som hjælp til at lære timingen
+• Offline, ingen konto, ingen reklamer

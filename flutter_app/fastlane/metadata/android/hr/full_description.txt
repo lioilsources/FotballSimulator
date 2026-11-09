@@ -1,0 +1,10 @@
+Fotball Simulator je jedan trenutak: rist se susreće s loptom.
+
+Lopta leti prema tebi i odskače. Udari je iz voleja jednim potezom prsta: mjesto gdje prst dodirne loptu određuje točku kontakta, luk poteza daje rotaciju, brzina određuje snagu, a trenutak puštanja tvoj je tajming.
+
+• Prava fizika lopte: otpor zraka, Magnusov efekt, rotacija i odskoci
+• Falš bočnom rotacijom, pad gornjom rotacijom
+• Ocjena tajminga na milisekundu
+• Zamrznuta slika pokazuje gdje si pogodio loptu
+• Usporeni prikaz kao pomoć pri učenju tajminga
+• Offline, bez računa, bez oglasa

@@ -1,0 +1,10 @@
+Fotball Simulator trata de un único instante: el empeine encuentra el balón.
+
+El balón viene hacia ti y bota. Golpéalo de volea con un solo deslizamiento: donde tu dedo toca el balón fija el punto de contacto, la curva del gesto añade efecto, su velocidad marca la potencia y el momento en que sueltas es tu timing.
+
+• Física real del balón: resistencia, efecto Magnus, giro y botes
+• Rosca con efecto lateral, caída con efecto liftado
+• Valoración del timing al milisegundo
+• La imagen congelada muestra dónde golpeaste el balón
+• Cámara lenta de ayuda para aprender el timing
+• Sin conexión, sin cuenta, sin anuncios

@@ -1,0 +1,10 @@
+Fotball Simulator on yksi hetki: jalkapöytä kohtaa pallon.
+
+Pallo lentää sinua kohti ja pomppaa. Lyö se lennosta yhdellä pyyhkäisyllä: kohta, jossa sormi koskee palloon, ratkaisee osumakohdan, pyyhkäisyn kaari antaa kierteen, nopeus voiman ja irrotushetki on ajoituksesi.
+
+• Aito pallofysiikka: ilmanvastus, Magnus-ilmiö, kierre ja pompat
+• Kaarra sivukierteellä, pudota yläkierteellä
+• Ajoituksen arvio millisekunnin tarkkuudella
+• Pysäytyskuva näyttää, mihin osuit palloon
+• Hidastus apuna ajoituksen opetteluun
+• Offline, ei tiliä, ei mainoksia

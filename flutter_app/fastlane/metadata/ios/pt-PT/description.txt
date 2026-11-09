@@ -1,0 +1,10 @@
+Fotball Simulator resume-se a um instante: o peito do pé encontra a bola.
+
+A bola vem na sua direção e ressalta. Remate de primeira com um único deslize: o ponto onde o dedo toca a bola define o contacto, a curva do gesto dá efeito, a velocidade define a força e o momento em que larga é o seu timing.
+
+• Física real da bola: arrasto, efeito Magnus, rotação e ressaltos
+• Arco com efeito lateral, bola a cair com topspin
+• Avaliação do timing ao milissegundo
+• A imagem congelada mostra onde acertou na bola
+• Câmara lenta de ajuda para aprender o timing
+• Offline, sem conta, sem anúncios

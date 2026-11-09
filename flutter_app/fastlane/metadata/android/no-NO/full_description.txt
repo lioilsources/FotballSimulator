@@ -1,0 +1,10 @@
+Fotball Simulator handler om ett øyeblikk: vristen møter ballen.
+
+Ballen kommer mot deg og spretter. Ta den på volley med ett sveip: der fingeren treffer ballen, bestemmer treffpunktet, buen i sveipet gir skru, farten gir kraften, og øyeblikket du slipper, er timingen din.
+
+• Ekte ballfysikk: luftmotstand, Magnus-effekt, spinn og sprett
+• Skru med sidespinn, dropp med toppspinn
+• Timingvurdering ned på millisekundet
+• Stillbilde viser nøyaktig hvor du traff ballen
+• Sakte film som hjelp til å lære timingen
+• Offline, ingen konto, ingen reklame
