@@ -1,0 +1,15 @@
+{
+  "@@locale": "bn",
+  "resultGoal": "গোল!",
+  "resultMiss": "মিস",
+  "resultLate": "অনেক দেরি",
+  "resultShort": "পৌঁছায়নি",
+  "kickAir": "বাতাসে কিক! ({ms} ms)",
+  "kickStats": "{speed} km/h · {spin} পাক/সে · {rating} ({ms} ms)",
+  "ratingPerfect": "নিখুঁত",
+  "ratingGood": "ভালো",
+  "ratingEarly": "আগে",
+  "ratingLate": "দেরিতে",
+  "slowMoOn": "স্লো-মো চালু",
+  "slowMoOff": "স্লো-মো বন্ধ"
+}

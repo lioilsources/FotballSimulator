@@ -1,0 +1,10 @@
+Fotball Simulator tient en un instant : le cou-de-pied rencontre le ballon.
+
+Le ballon arrive vers vous et rebondit. Frappez-le de volée d'un seul swipe : l'endroit où votre doigt touche le ballon fixe le point de contact, la courbe du geste donne l'effet, sa vitesse fixe la puissance et l'instant où vous relâchez fait votre timing.
+
+• Vraie physique du ballon : traînée, effet Magnus, rotation et rebonds
+• Enroulez avec l'effet latéral, plongez avec le lift
+• Note de timing à la milliseconde
+• Arrêt sur image au contact : voyez où vous avez frappé
+• Ralenti d'aide pour apprendre le timing
+• Hors ligne, sans compte, sans publicité

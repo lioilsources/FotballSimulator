@@ -1,0 +1,15 @@
+{
+  "@@locale": "hu",
+  "resultGoal": "GÓL!",
+  "resultMiss": "MELLÉ",
+  "resultLate": "TÚL KÉSŐ",
+  "resultShort": "RÖVID LETT",
+  "kickAir": "LEVEGŐBE! ({ms} ms)",
+  "kickStats": "{speed} km/h · {spin} ford./s · {rating} ({ms} ms)",
+  "ratingPerfect": "TÖKÉLETES",
+  "ratingGood": "JÓ",
+  "ratingEarly": "KORAI",
+  "ratingLate": "KÉSŐI",
+  "slowMoOn": "LASSÍTÁS BE",
+  "slowMoOff": "LASSÍTÁS KI"
+}

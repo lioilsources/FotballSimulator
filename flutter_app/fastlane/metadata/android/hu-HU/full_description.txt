@@ -1,0 +1,10 @@
+A Fotball Simulator egyetlen pillanatról szól: a lábfej találkozik a labdával.
+
+A labda feléd repül és pattan. Lődd kapásból egyetlen húzással: ahol az ujjad a labdához ér, az a találati pont, a húzás íve pörgetést ad, a sebessége az erőt, az elengedés pillanata pedig az időzítésed.
+
+• Valódi labdafizika: légellenállás, Magnus-hatás, pörgés és pattanások
+• Csavarás oldalpörgetéssel, ejtés felső pörgetéssel
+• Időzítés értékelése ezredmásodpercre
+• Az állókép megmutatja, hol találtad el a labdát
+• Lassítás segít megtanulni az időzítést
+• Offline, fiók és reklám nélkül

@@ -1,0 +1,15 @@
+{
+  "@@locale": "nb",
+  "resultGoal": "MÅL!",
+  "resultMiss": "BOM",
+  "resultLate": "FOR SENT",
+  "resultShort": "FOR KORT",
+  "kickAir": "LUFTSPARK! ({ms} ms)",
+  "kickStats": "{speed} km/t · {spin} omdr./s · {rating} ({ms} ms)",
+  "ratingPerfect": "PERFEKT",
+  "ratingGood": "BRA",
+  "ratingEarly": "FOR TIDLIG",
+  "ratingLate": "FOR SENT",
+  "slowMoOn": "SAKTE FILM PÅ",
+  "slowMoOff": "SAKTE FILM AV"
+}

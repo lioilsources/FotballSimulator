@@ -1,0 +1,15 @@
+{
+  "@@locale": "zh",
+  "resultGoal": "进球！",
+  "resultMiss": "射偏了",
+  "resultLate": "太晚了",
+  "resultShort": "力量不足",
+  "kickAir": "踢空了！（{ms} 毫秒）",
+  "kickStats": "{speed} km/h · {spin} 转/秒 · {rating}（{ms} 毫秒）",
+  "ratingPerfect": "完美",
+  "ratingGood": "不错",
+  "ratingEarly": "太早",
+  "ratingLate": "太晚",
+  "slowMoOn": "慢动作：开",
+  "slowMoOff": "慢动作：关"
+}

@@ -1,0 +1,15 @@
+{
+  "@@locale": "ru",
+  "resultGoal": "ГОЛ!",
+  "resultMiss": "МИМО",
+  "resultLate": "СЛИШКОМ ПОЗДНО",
+  "resultShort": "НЕДОЛЁТ",
+  "kickAir": "МИМО МЯЧА! ({ms} мс)",
+  "kickStats": "{speed} км/ч · {spin} об/с · {rating} ({ms} мс)",
+  "ratingPerfect": "ИДЕАЛЬНО",
+  "ratingGood": "ХОРОШО",
+  "ratingEarly": "РАНО",
+  "ratingLate": "ПОЗДНО",
+  "slowMoOn": "ЗАМЕДЛЕНИЕ ВКЛ",
+  "slowMoOff": "ЗАМЕДЛЕНИЕ ВЫКЛ"
+}

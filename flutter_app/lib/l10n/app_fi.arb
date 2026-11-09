@@ -1,0 +1,15 @@
+{
+  "@@locale": "fi",
+  "resultGoal": "MAALI!",
+  "resultMiss": "OHI",
+  "resultLate": "LIIAN MYÖHÄÄN",
+  "resultShort": "JÄI LYHYEKSI",
+  "kickAir": "HUTI! ({ms} ms)",
+  "kickStats": "{speed} km/h · {spin} kierr./s · {rating} ({ms} ms)",
+  "ratingPerfect": "TÄYDELLINEN",
+  "ratingGood": "HYVÄ",
+  "ratingEarly": "AIKAISIN",
+  "ratingLate": "MYÖHÄÄN",
+  "slowMoOn": "HIDASTUS PÄÄLLÄ",
+  "slowMoOff": "HIDASTUS POIS"
+}

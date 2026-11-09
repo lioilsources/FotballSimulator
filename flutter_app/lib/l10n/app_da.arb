@@ -1,0 +1,15 @@
+{
+  "@@locale": "da",
+  "resultGoal": "MÅL!",
+  "resultMiss": "FORBI",
+  "resultLate": "FOR SENT",
+  "resultShort": "FOR KORT",
+  "kickAir": "LUFTSPARK! ({ms} ms)",
+  "kickStats": "{speed} km/t · {spin} omdr./s · {rating} ({ms} ms)",
+  "ratingPerfect": "PERFEKT",
+  "ratingGood": "GODT",
+  "ratingEarly": "FOR TIDLIGT",
+  "ratingLate": "FOR SENT",
+  "slowMoOn": "SLOWMOTION TIL",
+  "slowMoOff": "SLOWMOTION FRA"
+}

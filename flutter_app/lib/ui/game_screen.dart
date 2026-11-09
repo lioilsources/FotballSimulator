@@ -3,10 +3,13 @@ import 'dart:ui' show PointMode;
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
+import 'package:intl/intl.dart';
 
+import '../core/contact_model.dart';
 import '../core/game.dart';
 import '../core/tuning.dart';
 import '../core/vec3.dart';
+import '../l10n/app_localizations.dart';
 import '../render/scene_painter.dart';
 import 'swipe_input.dart';
 
@@ -131,9 +134,9 @@ class _GameScreenState extends State<GameScreen>
                     painter: _OverlayPainter(_game, _swipe, pad.bottom, _frame)),
               ),
               _hud(pad),
-              Positioned(
+              PositionedDirectional(
                 top: pad.top + 8,
-                right: 12,
+                end: 12,
                 child: _AssistToggle(
                   on: _game.assist,
                   onTap: () => setState(() => _game.assist = !_game.assist),
@@ -163,7 +166,7 @@ class _GameScreenState extends State<GameScreen>
             child: Opacity(
               opacity: kickAlpha,
               child: Text(
-                _game.kickText,
+                _kickText(context),
                 textAlign: TextAlign.center,
                 style: const TextStyle(
                     color: Colors.white,
@@ -175,7 +178,7 @@ class _GameScreenState extends State<GameScreen>
           ),
           Center(
             child: Text(
-              _game.resultText,
+              _resultText(AppLocalizations.of(context)),
               style: TextStyle(
                   color: Color(_game.resultColor),
                   fontSize: 56,
@@ -186,6 +189,37 @@ class _GameScreenState extends State<GameScreen>
         ]);
       },
     );
+  }
+
+  String _resultText(AppLocalizations l) => switch (_game.result) {
+        ShotResult.none => '',
+        ShotResult.goal => l.resultGoal,
+        ShotResult.miss => l.resultMiss,
+        ShotResult.late => l.resultLate,
+        ShotResult.short => l.resultShort,
+      };
+
+  String _kickText(BuildContext context) {
+    final k = _game.kick;
+    if (k == null) return '';
+    final l = AppLocalizations.of(context);
+    final ms = k.errMs >= 0 ? '+${k.errMs}' : '${k.errMs}';
+    if (!k.hit) return l.kickAir(ms);
+    final locale = Intl.verifiedLocale(
+        Localizations.localeOf(context).toLanguageTag(),
+        NumberFormat.localeExists,
+        onFailure: (_) => 'en');
+    final spin =
+        NumberFormat.decimalPatternDigits(locale: locale, decimalDigits: 1)
+            .format(k.spinRps);
+    final rating = switch (k.rating) {
+      Rating.perfect => l.ratingPerfect,
+      Rating.good => l.ratingGood,
+      Rating.early => l.ratingEarly,
+      Rating.late => l.ratingLate,
+      Rating.miss => l.resultMiss,
+    };
+    return l.kickStats(k.speedKmh, spin, rating, ms);
   }
 }
 
@@ -205,7 +239,9 @@ class _AssistToggle extends StatelessWidget {
           borderRadius: BorderRadius.circular(16),
         ),
         child: Text(
-          on ? 'SLOW-MO ON' : 'SLOW-MO OFF',
+          on
+              ? AppLocalizations.of(context).slowMoOn
+              : AppLocalizations.of(context).slowMoOff,
           style: const TextStyle(
               color: Colors.white, fontSize: 12, fontWeight: FontWeight.w700),
         ),

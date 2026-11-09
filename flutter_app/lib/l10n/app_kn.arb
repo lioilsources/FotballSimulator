@@ -1,0 +1,15 @@
+{
+  "@@locale": "kn",
+  "resultGoal": "ಗೋಲ್!",
+  "resultMiss": "ತಪ್ಪಿತು",
+  "resultLate": "ತುಂಬಾ ತಡ",
+  "resultShort": "ತಲುಪಲಿಲ್ಲ",
+  "kickAir": "ಗಾಳಿಯಲ್ಲಿ ಕಿಕ್! ({ms} ms)",
+  "kickStats": "{speed} km/h · {spin} ಸುತ್ತು/ಸೆ · {rating} ({ms} ms)",
+  "ratingPerfect": "ಪರ್ಫೆಕ್ಟ್",
+  "ratingGood": "ಉತ್ತಮ",
+  "ratingEarly": "ಬೇಗ",
+  "ratingLate": "ತಡ",
+  "slowMoOn": "ಸ್ಲೋ-ಮೋ ಆನ್",
+  "slowMoOff": "ಸ್ಲೋ-ಮೋ ಆಫ್"
+}

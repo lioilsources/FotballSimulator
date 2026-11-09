@@ -1,0 +1,15 @@
+{
+  "@@locale": "ta",
+  "resultGoal": "கோல்!",
+  "resultMiss": "தவறியது",
+  "resultLate": "மிகத் தாமதம்",
+  "resultShort": "எட்டவில்லை",
+  "kickAir": "காற்றில் உதை! ({ms} ms)",
+  "kickStats": "{speed} km/h · {spin} சுற்று/வி · {rating} ({ms} ms)",
+  "ratingPerfect": "அருமை",
+  "ratingGood": "நன்று",
+  "ratingEarly": "முன்கூட்டியே",
+  "ratingLate": "தாமதம்",
+  "slowMoOn": "ஸ்லோ-மோ ஆன்",
+  "slowMoOff": "ஸ்லோ-மோ ஆஃப்"
+}

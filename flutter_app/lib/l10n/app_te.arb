@@ -1,0 +1,15 @@
+{
+  "@@locale": "te",
+  "resultGoal": "గోల్!",
+  "resultMiss": "తప్పింది",
+  "resultLate": "చాలా ఆలస్యం",
+  "resultShort": "చేరలేదు",
+  "kickAir": "గాలిలో కిక్! ({ms} ms)",
+  "kickStats": "{speed} km/h · {spin} భ్రమణాలు/సె · {rating} ({ms} ms)",
+  "ratingPerfect": "పర్ఫెక్ట్",
+  "ratingGood": "బాగుంది",
+  "ratingEarly": "ముందుగా",
+  "ratingLate": "ఆలస్యం",
+  "slowMoOn": "స్లో-మో ఆన్",
+  "slowMoOff": "స్లో-మో ఆఫ్"
+}

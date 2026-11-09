@@ -1,0 +1,15 @@
+{
+  "@@locale": "el",
+  "resultGoal": "ΓΚΟΛ!",
+  "resultMiss": "ΑΣΤΟΧΙΑ",
+  "resultLate": "ΠΟΛΥ ΑΡΓΑ",
+  "resultShort": "ΔΕΝ ΕΦΤΑΣΕ",
+  "kickAir": "ΚΛΩΤΣΙΑ ΣΤΟΝ ΑΕΡΑ! ({ms} ms)",
+  "kickStats": "{speed} km/h · {spin} στρ./s · {rating} ({ms} ms)",
+  "ratingPerfect": "ΤΕΛΕΙΟ",
+  "ratingGood": "ΚΑΛΟ",
+  "ratingEarly": "ΝΩΡΙΣ",
+  "ratingLate": "ΑΡΓΑ",
+  "slowMoOn": "ΑΡΓΗ ΚΙΝΗΣΗ: ΝΑΙ",
+  "slowMoOff": "ΑΡΓΗ ΚΙΝΗΣΗ: ΟΧΙ"
+}

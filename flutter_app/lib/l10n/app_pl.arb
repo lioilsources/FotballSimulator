@@ -1,0 +1,15 @@
+{
+  "@@locale": "pl",
+  "resultGoal": "GOL!",
+  "resultMiss": "PUDŁO",
+  "resultLate": "ZA PÓŹNO",
+  "resultShort": "ZA KRÓTKO",
+  "kickAir": "KIKS! ({ms} ms)",
+  "kickStats": "{speed} km/h · {spin} obr./s · {rating} ({ms} ms)",
+  "ratingPerfect": "IDEALNIE",
+  "ratingGood": "DOBRZE",
+  "ratingEarly": "ZA WCZEŚNIE",
+  "ratingLate": "ZA PÓŹNO",
+  "slowMoOn": "SPOWOLNIENIE WŁ.",
+  "slowMoOff": "SPOWOLNIENIE WYŁ."
+}

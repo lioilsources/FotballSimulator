@@ -1,0 +1,10 @@
+Fotball Simulator xoay quanh một khoảnh khắc: mu bàn chân chạm bóng.
+
+Bóng bay về phía bạn và nảy lên. Sút vô-lê chỉ với một lần vuốt: chỗ ngón tay chạm bóng là điểm tiếp xúc, đường cong của cú vuốt tạo xoáy, tốc độ quyết định lực và khoảnh khắc bạn nhấc tay là thời điểm sút.
+
+• Vật lý bóng thật: lực cản, hiệu ứng Magnus, xoáy và nảy
+• Cứa lòng bằng xoáy ngang, bóng chúi bằng xoáy trên
+• Chấm điểm thời điểm đến từng mili giây
+• Khung hình dừng cho thấy chính xác chỗ bạn chạm bóng
+• Quay chậm hỗ trợ luyện thời điểm
+• Ngoại tuyến, không tài khoản, không quảng cáo

@@ -1,0 +1,15 @@
+{
+  "@@locale": "hr",
+  "resultGoal": "GOL!",
+  "resultMiss": "PROMAŠAJ",
+  "resultLate": "PREKASNO",
+  "resultShort": "PREKRATKO",
+  "kickAir": "U ZRAK! ({ms} ms)",
+  "kickStats": "{speed} km/h · {spin} okr./s · {rating} ({ms} ms)",
+  "ratingPerfect": "SAVRŠENO",
+  "ratingGood": "DOBRO",
+  "ratingEarly": "PRERANO",
+  "ratingLate": "KASNO",
+  "slowMoOn": "USPORENO: UKLJ.",
+  "slowMoOff": "USPORENO: ISKLJ."
+}

@@ -1,0 +1,15 @@
+{
+  "@@locale": "ur",
+  "resultGoal": "گول!",
+  "resultMiss": "چوک گئے",
+  "resultLate": "بہت دیر",
+  "resultShort": "نہیں پہنچی",
+  "kickAir": "ہوا میں کک! ({ms} ms)",
+  "kickStats": "{speed} km/h · {spin} چکر/سیکنڈ · {rating} ({ms} ms)",
+  "ratingPerfect": "بہترین",
+  "ratingGood": "اچھا",
+  "ratingEarly": "جلدی",
+  "ratingLate": "دیر سے",
+  "slowMoOn": "سلو موشن: آن",
+  "slowMoOff": "سلو موشن: آف"
+}

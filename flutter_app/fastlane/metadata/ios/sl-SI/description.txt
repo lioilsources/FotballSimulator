@@ -1,0 +1,10 @@
+Fotball Simulator je en sam trenutek: nart se sreča z žogo.
+
+Žoga prileti proti tebi in odskoči. Udari jo iz voleja z enim potegom prsta: mesto, kjer prst zadene žogo, določa točko stika, lok potega doda rotacijo, hitrost določa moč, trenutek spusta pa je tvoj tajming.
+
+• Prava fizika žoge: zračni upor, Magnusov učinek, rotacija in odboji
+• Zavijanje s stransko rotacijo, padec z zgornjo rotacijo
+• Ocena tajminga na milisekundo
+• Zamrznjena slika pokaže, kje si zadel žogo
+• Počasni posnetek kot pomoč pri učenju tajminga
+• Brez povezave, brez računa, brez oglasov

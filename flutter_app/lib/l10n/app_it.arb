@@ -1,0 +1,15 @@
+{
+  "@@locale": "it",
+  "resultGoal": "GOL!",
+  "resultMiss": "FUORI",
+  "resultLate": "TROPPO TARDI",
+  "resultShort": "CORTO",
+  "kickAir": "A VUOTO! ({ms} ms)",
+  "kickStats": "{speed} km/h · {spin} giri/s · {rating} ({ms} ms)",
+  "ratingPerfect": "PERFETTO",
+  "ratingGood": "BUONO",
+  "ratingEarly": "IN ANTICIPO",
+  "ratingLate": "IN RITARDO",
+  "slowMoOn": "RALLENTY: SÌ",
+  "slowMoOff": "RALLENTY: NO"
+}

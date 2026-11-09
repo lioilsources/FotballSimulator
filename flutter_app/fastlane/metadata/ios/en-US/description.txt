@@ -1,0 +1,10 @@
+Fotball Simulator is about one moment: your instep meets the ball.
+
+The ball is served toward you and bounces. Strike it on the volley with a single swipe: where your finger touches the ball sets the contact point, the curve of the swipe adds spin, its speed sets the power and the moment you let go is your timing.
+
+• Real ball physics: drag, Magnus effect, spin and bounces
+• Curl it with sidespin, dip it with topspin
+• Timing ratings down to the millisecond
+• Freeze-frame shows exactly where you struck the ball
+• Slow-mo assist for learning the timing
+• Offline, no account, no ads

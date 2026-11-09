@@ -1,0 +1,15 @@
+{
+  "@@locale": "tr",
+  "resultGoal": "GOL!",
+  "resultMiss": "AUT",
+  "resultLate": "ÇOK GEÇ",
+  "resultShort": "KISA KALDI",
+  "kickAir": "ISKALADIN! ({ms} ms)",
+  "kickStats": "{speed} km/sa · {spin} dev/sn · {rating} ({ms} ms)",
+  "ratingPerfect": "MÜKEMMEL",
+  "ratingGood": "İYİ",
+  "ratingEarly": "ERKEN",
+  "ratingLate": "GEÇ",
+  "slowMoOn": "AĞIR ÇEKİM AÇIK",
+  "slowMoOff": "AĞIR ÇEKİM KAPALI"
+}

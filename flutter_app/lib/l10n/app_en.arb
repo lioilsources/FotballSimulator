@@ -1,0 +1,15 @@
+{
+  "@@locale": "en",
+  "resultGoal": "GOAL!",
+  "resultMiss": "MISS",
+  "resultLate": "TOO LATE",
+  "resultShort": "FELL SHORT",
+  "kickAir": "AIR KICK! ({ms} ms)",
+  "kickStats": "{speed} km/h · {spin} rev/s · {rating} ({ms} ms)",
+  "ratingPerfect": "PERFECT",
+  "ratingGood": "GOOD",
+  "ratingEarly": "EARLY",
+  "ratingLate": "LATE",
+  "slowMoOn": "SLOW-MO ON",
+  "slowMoOff": "SLOW-MO OFF"
+}

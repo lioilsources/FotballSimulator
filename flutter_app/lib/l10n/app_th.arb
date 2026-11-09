@@ -1,0 +1,15 @@
+{
+  "@@locale": "th",
+  "resultGoal": "ประตู!",
+  "resultMiss": "พลาด",
+  "resultLate": "ช้าเกินไป",
+  "resultShort": "ไปไม่ถึง",
+  "kickAir": "เตะวืด! ({ms} ms)",
+  "kickStats": "{speed} กม./ชม. · {spin} รอบ/วิ · {rating} ({ms} ms)",
+  "ratingPerfect": "สมบูรณ์แบบ",
+  "ratingGood": "ดี",
+  "ratingEarly": "เร็วไป",
+  "ratingLate": "ช้าไป",
+  "slowMoOn": "สโลว์โมชัน: เปิด",
+  "slowMoOff": "สโลว์โมชัน: ปิด"
+}

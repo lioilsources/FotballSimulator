@@ -1,0 +1,15 @@
+{
+  "@@locale": "sl",
+  "resultGoal": "GOL!",
+  "resultMiss": "MIMO",
+  "resultLate": "PREPOZNO",
+  "resultShort": "PREKRATKO",
+  "kickAir": "V PRAZNO! ({ms} ms)",
+  "kickStats": "{speed} km/h · {spin} vrt./s · {rating} ({ms} ms)",
+  "ratingPerfect": "POPOLNO",
+  "ratingGood": "DOBRO",
+  "ratingEarly": "PREZGODAJ",
+  "ratingLate": "POZNO",
+  "slowMoOn": "POČASNI POSNETEK: VKL.",
+  "slowMoOff": "POČASNI POSNETEK: IZKL."
+}

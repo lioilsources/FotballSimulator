@@ -1,0 +1,15 @@
+{
+  "@@locale": "sk",
+  "resultGoal": "GÓL!",
+  "resultMiss": "VEDĽA",
+  "resultLate": "NESKORO",
+  "resultShort": "NEDOLETEL",
+  "kickAir": "VZDUCH! ({ms} ms)",
+  "kickStats": "{speed} km/h · {spin} ot./s · {rating} ({ms} ms)",
+  "ratingPerfect": "PERFEKTNÉ",
+  "ratingGood": "DOBRÉ",
+  "ratingEarly": "SKORO",
+  "ratingLate": "NESKORO",
+  "slowMoOn": "SPOMALENIE ZAP",
+  "slowMoOff": "SPOMALENIE VYP"
+}

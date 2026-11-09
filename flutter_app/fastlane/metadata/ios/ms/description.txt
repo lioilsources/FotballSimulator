@@ -1,0 +1,10 @@
+Fotball Simulator tentang satu detik: kekura kaki bertemu bola.
+
+Bola datang ke arah anda dan melantun. Sepak secara voli dengan satu leretan: tempat jari menyentuh bola menentukan titik sentuhan, lengkung leretan memberi putaran, kelajuannya menentukan kuasa dan saat anda melepaskan ialah masa anda.
+
+• Fizik bola sebenar: rintangan udara, kesan Magnus, putaran dan lantunan
+• Melengkung dengan putaran sisi, menjunam dengan topspin
+• Penilaian masa hingga milisaat
+• Bingkai beku menunjukkan di mana anda menyepak bola
+• Gerak perlahan untuk membantu belajar masa
+• Luar talian, tanpa akaun, tanpa iklan

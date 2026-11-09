@@ -1,0 +1,10 @@
+Fotball Simulator je o jedinom okamihu: priehlavok sa stretne s loptou.
+
+Lopta priletí, odskočí a vy ju jedným švihom prsta trafíte z voleja. Miesto, kde sa prstom dotknete lopty, určuje bod kontaktu, oblúk švihu pridá rotáciu, rýchlosť určí silu a okamih pustenia je váš timing.
+
+• Skutočná fyzika lopty: odpor vzduchu, Magnusov jav, rotácia a odskoky
+• Falš bočnou rotáciou, padajúca strela topspinom
+• Hodnotenie timingu na milisekundy
+• Freeze-frame ukáže, kde presne ste loptu trafili
+• Spomalenie ako pomoc pri učení timingu
+• Offline, bez účtu, bez reklám

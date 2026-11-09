@@ -1,0 +1,1 @@
+football,soccer,volley,kick,shot,physics,swipe,goal,curl,spin,sport,striker

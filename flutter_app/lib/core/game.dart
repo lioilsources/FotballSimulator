@@ -8,6 +8,24 @@ import 'vec3.dart';
 
 enum GameState { serve, kickWindow, flight, result }
 
+/// Výsledek rozehrávky pro HUD (text lokalizuje UI).
+enum ShotResult { none, goal, miss, late, short }
+
+/// Údaje o kopu pro HUD (text lokalizuje UI).
+class KickReport {
+  final bool hit;
+  final int errMs; // timing chyba v ms (+ = pozdě)
+  final int speedKmh;
+  final double spinRps; // otáčky za sekundu
+  final Rating rating;
+  const KickReport.air(this.errMs, this.rating)
+      : hit = false,
+        speedKmh = 0,
+        spinRps = 0;
+  const KickReport.hit(this.errMs, this.rating, this.speedKmh, this.spinRps)
+      : hit = true;
+}
+
 /// Freeze-frame kontaktu (§5.3): kontaktní bod + vektor výkopu ve světě.
 class FreezeFrame {
   final Vec3 contact, vel;
@@ -29,9 +47,9 @@ class Game {
   bool swipeEnabled = true;
 
   // HUD
-  String kickText = '';
+  KickReport? kick;
   double kickTextAge = double.infinity; // s reálného času od zobrazení
-  String resultText = '';
+  ShotResult result = ShotResult.none;
   int resultColor = 0xFFFFFFFF;
   FreezeFrame? freeze;
 
@@ -54,7 +72,7 @@ class Game {
     _resultReported = false;
     serveTime = 0.0;
     swipeEnabled = true;
-    resultText = '';
+    result = ShotResult.none;
     trail.clear();
     final s = _serveGen.nextServe();
     ball.position = s.pos;
@@ -98,14 +116,15 @@ class Game {
       case GameState.kickWindow:
         // druhý dopad = šance pryč (volej se kope před ním)
         if (ball.bounceCount >= 2) {
-          _finishServe(_swung ? 'MIMO' : 'POZDĚ', 0xFFFF9933);
+          _finishServe(
+              _swung ? ShotResult.miss : ShotResult.late, 0xFFFF9933);
         }
       case GameState.flight:
         if (!_resultReported) _checkGoalCrossing(prevPos);
         // míč daleko za bránou už nemá co ukázat
         if (ball.position.z < -(T.goalDistance + 10.0)) {
           ball.stop();
-          _finishServe('', 0xFFFFFFFF);
+          _finishServe(ShotResult.none, 0xFFFFFFFF);
         }
       case GameState.result:
         _resultTimer -= dt;
@@ -177,7 +196,7 @@ class Game {
 
     if (!res.hit) {
       // vzduch — míč letí dál, serve uzavře druhý dopad
-      _showKickText('VZDUCH! (${_signed(errMs)} ms)');
+      _showKick(KickReport.air(errMs, res.rating));
       return;
     }
 
@@ -190,9 +209,8 @@ class Game {
     ball.launch(vel, omega);
     state = GameState.flight;
     _resultReported = false;
-    _showKickText('${(vel.length * 3.6).round()} km/h · '
-        '${(omega.length / (2 * math.pi)).toStringAsFixed(1)} ot/s · '
-        '${res.rating.name.toUpperCase()} (${_signed(errMs)} ms)');
+    _showKick(KickReport.hit(errMs, res.rating, (vel.length * 3.6).round(),
+        omega.length / (2 * math.pi)));
     freeze = FreezeFrame(contactWorld, vel, T.freezeTime);
   }
 
@@ -228,39 +246,37 @@ class Game {
       final crossY = prev.y + (cur.y - prev.y) * t;
       _resultReported = true;
       if (crossX.abs() < T.goalHalfWidth && crossY < T.goalHeight) {
-        _showResult('GÓL!', 0xFF4DFF66);
+        _showResult(ShotResult.goal, 0xFF4DFF66);
       } else {
-        _showResult('MIMO', 0xFFFF594D);
+        _showResult(ShotResult.miss, 0xFFFF594D);
       }
     }
   }
 
   void _onBallStopped() {
     if (state == GameState.flight && !_resultReported) {
-      _showResult('NEDOLETĚL', 0xFFFF9933);
+      _showResult(ShotResult.short, 0xFFFF9933);
     }
-    _finishServe('', 0xFFFFFFFF);
+    _finishServe(ShotResult.none, 0xFFFFFFFF);
   }
 
   /// Uzavře rozehrávku (s volitelnou hláškou) a po pauze rozehraje další míč.
-  void _finishServe(String msg, int color) {
+  void _finishServe(ShotResult msg, int color) {
     if (state == GameState.result) return;
     state = GameState.result;
     swipeEnabled = false;
     timeScale = 1.0;
-    if (msg.isNotEmpty) _showResult(msg, color);
+    if (msg != ShotResult.none) _showResult(msg, color);
     _resultTimer = T.resultPause;
   }
 
-  void _showResult(String text, int color) {
-    resultText = text;
+  void _showResult(ShotResult r, int color) {
+    result = r;
     resultColor = color;
   }
 
-  void _showKickText(String text) {
-    kickText = text;
+  void _showKick(KickReport k) {
+    kick = k;
     kickTextAge = 0;
   }
-
-  static String _signed(int v) => v >= 0 ? '+$v' : '$v';
 }

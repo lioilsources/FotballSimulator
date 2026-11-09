@@ -1,0 +1,15 @@
+{
+  "@@locale": "ml",
+  "resultGoal": "ഗോൾ!",
+  "resultMiss": "പിഴച്ചു",
+  "resultLate": "വളരെ വൈകി",
+  "resultShort": "എത്തിയില്ല",
+  "kickAir": "വായുവിൽ കിക്ക്! ({ms} ms)",
+  "kickStats": "{speed} km/h · {spin} ചുറ്റ്/സെ · {rating} ({ms} ms)",
+  "ratingPerfect": "പെർഫെക്റ്റ്",
+  "ratingGood": "നല്ലത്",
+  "ratingEarly": "നേരത്തെ",
+  "ratingLate": "വൈകി",
+  "slowMoOn": "സ്ലോ-മോ ഓൺ",
+  "slowMoOff": "സ്ലോ-മോ ഓഫ്"
+}

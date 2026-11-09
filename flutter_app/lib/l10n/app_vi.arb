@@ -1,0 +1,15 @@
+{
+  "@@locale": "vi",
+  "resultGoal": "VÀO!",
+  "resultMiss": "TRƯỢT",
+  "resultLate": "QUÁ MUỘN",
+  "resultShort": "THIẾU LỰC",
+  "kickAir": "ĐÁ HỤT! ({ms} ms)",
+  "kickStats": "{speed} km/h · {spin} vòng/giây · {rating} ({ms} ms)",
+  "ratingPerfect": "HOÀN HẢO",
+  "ratingGood": "TỐT",
+  "ratingEarly": "SỚM",
+  "ratingLate": "MUỘN",
+  "slowMoOn": "QUAY CHẬM: BẬT",
+  "slowMoOff": "QUAY CHẬM: TẮT"
+}

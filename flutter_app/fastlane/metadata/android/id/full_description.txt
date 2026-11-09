@@ -1,0 +1,10 @@
+Fotball Simulator adalah tentang satu momen: punggung kaki bertemu bola.
+
+Bola datang ke arahmu lalu memantul. Tendang voli dengan satu usapan: titik jarimu menyentuh bola menentukan titik kontak, lengkungan usapan memberi putaran, kecepatannya menentukan tenaga, dan saat kamu melepas adalah timing-mu.
+
+• Fisika bola nyata: hambatan udara, efek Magnus, putaran, dan pantulan
+• Melengkung dengan putaran samping, menukik dengan topspin
+• Penilaian timing hingga milidetik
+• Bingkai beku menunjukkan di mana kamu menendang bola
+• Gerak lambat untuk membantu belajar timing
+• Offline, tanpa akun, tanpa iklan

@@ -1,0 +1,15 @@
+{
+  "@@locale": "ca",
+  "resultGoal": "GOL!",
+  "resultMiss": "FORA",
+  "resultLate": "MASSA TARD",
+  "resultShort": "CURT",
+  "kickAir": "A L'AIRE! ({ms} ms)",
+  "kickStats": "{speed} km/h · {spin} v/s · {rating} ({ms} ms)",
+  "ratingPerfect": "PERFECTE",
+  "ratingGood": "BÉ",
+  "ratingEarly": "AVIAT",
+  "ratingLate": "TARD",
+  "slowMoOn": "CÀMERA LENTA: SÍ",
+  "slowMoOff": "CÀMERA LENTA: NO"
+}

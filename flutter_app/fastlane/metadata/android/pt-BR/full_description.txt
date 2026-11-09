@@ -1,0 +1,10 @@
+Fotball Simulator é sobre um único instante: o peito do pé encontra a bola.
+
+A bola vem na sua direção e quica. Bata de voleio com um único deslize: onde seu dedo toca a bola define o ponto de contato, a curva do gesto dá efeito, a velocidade define a força e o momento em que você solta é o seu tempo.
+
+• Física real da bola: arrasto, efeito Magnus, giro e quiques
+• Curva com efeito lateral, bola caindo com topspin
+• Avaliação do tempo ao milissegundo
+• A imagem congelada mostra onde você acertou a bola
+• Câmera lenta de ajuda para aprender o tempo
+• Offline, sem conta, sem anúncios

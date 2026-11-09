@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
-# Spustí všechny headless testy. Cesta k Godotu z $GODOT (default = macOS
-# instalace z CLAUDE.md). Exit code 1, pokud cokoliv selže.
+# Spustí všechny headless testy. Cesta k Godotu z $GODOT (default = `godot`
+# v PATH). Exit code 1, pokud cokoliv selže.
 set -u
 cd "$(dirname "$0")/.."
-GODOT="${GODOT:-/Volumes/YOTTA/Applications/Godot_mono.app/Contents/MacOS/Godot}"
+GODOT="${GODOT:-godot}"
 
 "$GODOT" --headless --path . --import >/dev/null 2>&1
 

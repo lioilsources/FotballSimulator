@@ -1,0 +1,15 @@
+{
+  "@@locale": "gu",
+  "resultGoal": "ગોલ!",
+  "resultMiss": "ચૂકી ગયા",
+  "resultLate": "બહુ મોડું",
+  "resultShort": "ઓછું પડ્યું",
+  "kickAir": "હવામાં કિક! ({ms} ms)",
+  "kickStats": "{speed} km/h · {spin} ચક્કર/સે · {rating} ({ms} ms)",
+  "ratingPerfect": "પરફેક્ટ",
+  "ratingGood": "સારું",
+  "ratingEarly": "વહેલું",
+  "ratingLate": "મોડું",
+  "slowMoOn": "સ્લો-મો ચાલુ",
+  "slowMoOff": "સ્લો-મો બંધ"
+}

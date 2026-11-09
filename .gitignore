@@ -4,3 +4,4 @@ export/
 build/
 android/build/
 .DS_Store
+l10n/*.translation
