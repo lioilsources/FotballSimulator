@@ -1,150 +1,67 @@
-# CLAUDE.md
+# FotballSimulator
 
-## Project Overview
-
-FotballSimulator — simulátor kopání do míče (volej) v Godot 4.7 (Mobile
-renderer, GDScript), cíl Android + iOS. Kompletní design: **VOLLEY_PLAN.md**
-(architektura, fyzikální model, fáze implementace). Jádro hry je contact
-model — kde a kdy nárt potká míč; vše ostatní z toho plyne deterministicky.
+## Účel
+Simulátor kopání do míče (volej) v Godot 4.7 (Mobile renderer, GDScript),
+cíl Android + iOS, plus paralelní Flutter port v `flutter_app/`. Jádro hry je
+contact model — kde a kdy nárt potká míč; vše ostatní z toho plyne
+deterministicky. Kompletní design: **VOLLEY_PLAN.md**.
 
 **Stav: Fáze 1 hotová** (contact model, swipe input, timing okno s
 pre-simulací ideálu, freeze-frame, HUD; hratelná smyčka serve→kick→result).
 Další krok: Fáze 2 — verlet síť, flight kamera, heatmapa, tuning pass
-(viz VOLLEY_PLAN.md §7). Audit stavu, známé chyby a plán testování +
-vylepšení: **ROADMAP.md** (začít sekcí V0/T0).
+(VOLLEY_PLAN.md §7). Audit, známé chyby a plán: **ROADMAP.md** (začít V0/T0).
 
-## Commands
+## Build a test
+Cesta k Godotu je v `$GODOT` (viz `.env.example`).
 
 ```bash
-GODOT="/Volumes/YOTTA/Applications/Godot_mono.app/Contents/MacOS/Godot"
+"$GODOT" --editor --path .          # editor
+"$GODOT" --path .                   # spustit hru
 
-# otevřít v editoru
-"$GODOT" --editor --path .
-
-# spustit hru
-"$GODOT" --path .
-
-# všechny headless testy jedním příkazem (import + tests/*_test.gd, exit 0/1)
+# gate před pushem: všechny headless testy (import + tests/*_test.gd, exit 0/1)
 GODOT="$GODOT" tests/run_all.sh
 
 # jednotlivě
 "$GODOT" --headless --path . --script res://tests/physics_test.gd   # let, odskok, determinismus
 "$GODOT" --headless --path . --script res://tests/contact_test.gd   # tabulkové případy kontaktu
-"$GODOT" --headless --path . --script res://tests/swipe_test.gd     # geometrie gesta (síla, křivka, strop vzorků)
-"$GODOT" --headless --path . --script res://tests/gameplay_test.gd  # end-to-end serve→kop→gól, slow-mo reset, brána
+"$GODOT" --headless --path . --script res://tests/swipe_test.gd     # geometrie gesta
+"$GODOT" --headless --path . --script res://tests/gameplay_test.gd  # end-to-end serve→kop→gól
 
-# po přidání nového class_name souboru před headless během přegenerovat cache:
+# po přidání nového class_name souboru před headless během přegenerovat cache
 "$GODOT" --headless --path . --import
 
-# Android debug APK (export_presets.cfg → preset "Android")
-"$GODOT" --headless --path . --export-debug "Android" build/FotballSimulator.apk
-
-# instalace na připojený telefon (USB debugging)
-~/Library/Android/sdk/platform-tools/adb install -r build/FotballSimulator.apk
-~/Library/Android/sdk/platform-tools/adb shell am start -n com.ol1n.fotballsimulator/com.godot.game.GodotApp
-
-# iOS: vygenerovat Xcode projekt + build pro zařízení
-"$GODOT" --headless --path . --export-debug "iOS" build/ios/FotballSimulator.xcodeproj
-cd build/ios && xcodebuild -project FotballSimulator.xcodeproj -scheme FotballSimulator \
-    -configuration Debug -destination "generic/platform=iOS" -allowProvisioningUpdates build
+cd flutter_app && flutter test      # Flutter port
 ```
 
-## Mobilní export
+Mobilní export (APK, Xcode projekt, adb): `docs/mobile-export.md`.
 
-Export templates 4.7.1.stable.mono jsou nainstalované v
-`~/Library/Application Support/Godot/export_templates/4.7.1.stable.mono/`
-(mono edice editoru vyžaduje mono templates — jiný balík než standard).
-Editor settings mají vyplněné Android SDK (`~/Library/Android/sdk`), JDK 21
-a debug keystore (`~/.android/debug.keystore`, dědictví Flutteru).
+## Mapa
+- `scripts/core/` — fyzika, contact model, serve, game state, brána
+- `scripts/input/` — swipe gesto; `scripts/ui/` — freeze-frame, statistiky
+- `scripts/util/tuning.gd` — jediný zdroj konstant (autoload `Tuning`)
+- `scenes/` — Godot scény (`assets/`, `scripts/net/` zatím prázdné)
+- `tests/` — headless SceneTree testy + `run_all.sh`
+- `flutter_app/` — Flutter port (`.gdignore`), viz `docs/flutter-port.md`
+- `.github/workflows/` — CI a release, generované z Distribution
 
-Android preset je bez gradle buildu (rychlá cesta přes předpřipravený
-template APK), arm64-v8a, package `com.ol1n.fotballsimulator`, immersive
-mode. Gradle build bude potřeba až pro AAB do Play Store (Fáze 3).
+## Invarianty
+- Všechny konstanty v `scripts/util/tuning.gd`; core skripty ho preloadují
+  jako `const T` (headless bez autoloadů). Flutter `lib/core/tuning.dart`
+  držet synchronní.
+- Fyzika letu je vlastní integrace (semi-implicit Euler, 120 Hz) —
+  RigidBody3D nemá Magnus, nepoužívat.
+- Souřadnice: hráč na origin, kope směrem **-z**.
+- Workflowy v `.github/workflows/` needitovat ručně — opravy patří do
+  Distribution a pak re-align (`docs/flutter-port.md`).
+- Lokálně `flutter build ios --release` selže (CI profil), používat `--profile`.
 
-iOS preset generuje **Xcode projekt** (`export_project_only=true`), ne rovnou
-.ipa — podpis a nahrání na zařízení řeší Xcode, stejný workflow jako
-u Flutter projektů. Bundle id `com.ol1n.fotballsimulator`, tým P82HWPG7FN,
-min iOS 14, portrait, launch storyboard. Build ověřen přes `xcodebuild`
-(BUILD SUCCEEDED, podepsáno Apple Development).
+Detaily (brána, contact model, timing, swipe, testy): `docs/architecture.md`.
 
-Pozn.: iOS export vypisuje na konci `ERROR: EditorSettings not instantiated
-yet ... shutdown_adb_on_exit` — benigní hláška při headless ukončení
-editoru, nemá vliv na výsledek.
+## Odchylky
+- Odchylka od lang.md: komentáře česky (identifikátory anglicky, handoff
+  z VOLLEY_PLAN.md).
 
-Ovládání: swipe na overlay míči dole (touch-down = kontaktní bod, oblouk =
-faleš, rychlost = síla, puštění = timing). Klávesa `A` přepíná assist
-slow-mo. Debug kopy: `1` přímý, `2` faleš (sidespin), `3` topspin.
-
-## Flutter port (`flutter_app/`)
-
-Paralelní port Fáze 1 do Flutteru (čistý Dart, bez 3D enginu — scéna
-přes vlastní perspektivní projekci v `CustomPainter`). `.gdignore` drží
-složku mimo Godot import.
-
-- `lib/core/` — 1:1 port `tuning`, `ball_physics`, `contact_model`,
-  `serve_generator`, `game_state` (→ `game.dart`, čistý Dart bez Flutteru).
-  **Konstanty držet synchronní s `scripts/util/tuning.gd`.**
-- Serve RNG je vlastní PCG32 — sekvence se neshoduje s Godotem.
-- Kamera: portrait má navíc minimální horizontální FOV 60° a lens shift
-  (`cameraMinHFovDeg`, `cameraCenterYFrac`) — s čistě vertikálním FOV 55°
-  míč v kop-zóně utíká ze záběru.
-- Slow-mo assist = tlačítko vpravo nahoře; klávesy 1/2/3/A fungují
-  s připojenou klávesnicí.
-
-```bash
-cd flutter_app
-flutter test                       # port physics/contact/gameplay testů
-flutter run --profile              # iOS na připojený telefon (Automatic signing)
-flutter run --release              # Android (bez key.properties podepíše debug klíčem)
-flutter build apk --release        # build/app/outputs/flutter-apk/app-release.apk
-```
-
-Bundle/applicationId `com.ol1n.fotballSimulator` (iOS i Android), tým P82HWPG7FN.
-
-### Release CI (`.github/workflows/`)
-
-Workflowy jsou z golden šablon `/Volumes/YOTTA/Dev/Distribution/workflows/`
-nasazené skriptem `align-project.sh` (`--app-dir flutter_app --app-name
-FotballSimulator`). Needitovat ručně — opravy patří do Distribution a pak
-re-align.
-
-- `ci.yml` — push na větev: analyze + test + debug buildy.
-- `release-ios.yml` / `release-android.yml` — tag `v*` → TestFlight /
-  GitHub Release + Firebase App Distribution. Verze se bere z tagu.
-- iOS **Release** konfigurace je Manual + `"Apple Distribution"` +
-  placeholder `CI_PROFILE_NAME` (CI dosadí UUID profilu) → lokální
-  `flutter build ios --release` selže, lokálně používat `--profile`.
-- Android release podpis čte `android/key.properties` (vytváří ho CI ze
-  secrets).
-
-## Konvence
-
-- Komentáře česky, identifikátory anglicky (handoff z VOLLEY_PLAN.md).
-- **Všechny konstanty v `scripts/util/tuning.gd`** — žádná magic numbers
-  jinde. Je to autoload `Tuning`; čistě fyzikální skripty (`ball_physics.gd`,
-  `serve_generator.gd`, budoucí `contact_model.gd`) ho ale **preloadují jako
-  `const T`**, aby fungovaly headless bez autoloadů a bez závislostí na scéně.
-- Fyzika letu je vlastní integrace (semi-implicit Euler, 120 Hz physics tick
-  v project.godot) — Godot RigidBody3D nemá Magnus, nepoužívat.
-- Geometrie brány: `scripts/core/goal.gd` staví tyče a břevno v `_ready()`
-  z `GOAL_HALF_WIDTH`/`GOAL_HEIGHT`/`POST_RADIUS` a umístí bránu na
-  `-GOAL_DISTANCE`; `pitch.tscn` nemá žádné rozměry natvrdo.
-- Contact model dostává i příchozí rychlost míče (lokální rámec); impuls
-  vychází z relativní normálové rychlosti nárt−míč, takže slabý kontakt míč
-  jen odrazí místo aby ho zastavil ve vzduchu.
-- Swipe: geometrie gesta je ve statických `SwipeInput.add_point` /
-  `analyze` (čisté, testované); Control uzel jen sbírá události a kreslí.
-- Souřadnice: hráč na origin, kope směrem **-z**; topspin pro let -z = spin
-  kolem **-x**, sidespin kolem **y**.
-- Contact model (`contact_model.gd`): čistá statická funkce v lokálním rámci
-  kopu (-z na bránu), převod do světa dělá `game_state`. Osa spinu = `u × t`
-  (odvozeno z τ = r × F, ne tvar `swing×d` z plánu — měl obrácenou
-  orientaci). Late shift posouvá kontakt **nahoru** (`+=`, překlep v plánu).
-- Timing: `game_state` si při serve **pre-simuluje** trajektorii scratch
-  instancí `BallPhysics` a najde ideální okamžik (klesání skrz
-  `IDEAL_KICK_HEIGHT` po prvním odskoku); `timing_error` = čas puštění swipu
-  minus ideál, měřeno v herním čase (nezávislé na assist slow-mo).
-- Testy: čisté SceneTree skripty (bez GUT), referenční hodnoty fyziky
-  z nezávislé Python implementace stejného modelu (hodnoty v hlavičce
-  physics_test.gd). Autoloady v `--script` režimu fungují, ale core skripty
-  stejně preloadují `const T` — drží to čistotu závislostí.
+## Kam dál
+- `VOLLEY_PLAN.md` — design a fáze
+- `ROADMAP.md` — audit, chyby, plán
+- `docs/architecture.md`, `docs/mobile-export.md`, `docs/flutter-port.md`

@@ -4,3 +4,18 @@ export/
 build/
 android/build/
 .DS_Store
+# devconv:start
+.env
+.env.*
+!.env.example
+*.p8
+*.p12
+*.jks
+key.properties
+.claude/settings.local.json
+CLAUDE.local.md
+.dart_tool/
+.flutter-plugins
+.flutter-plugins-dependencies
+lib/**/secrets.dart
+# devconv:end
