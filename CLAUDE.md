@@ -33,6 +33,10 @@ GODOT="$GODOT" tests/run_all.sh
 cd flutter_app && flutter test      # Flutter port
 ```
 
+Web: `cd flutter_app && flutter build web --base-href /FotballSimulator/play/`; CI `.github/workflows/web.yml`
+nasazuje na GitHub Pages pod `/play/` (jen když je zdroj Pages „GitHub Actions“). Na webu nejde `int` nad 2^53
+ani `1 << 32`, proto PCG32 počítá v 32bitových polovinách (`test/pcg32_web_parity_test.dart`).
+
 Mobilní export (APK, Xcode projekt, adb): `docs/mobile-export.md`.
 
 ## Mapa
